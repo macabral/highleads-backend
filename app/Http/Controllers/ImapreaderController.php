@@ -1,0 +1,100 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Contatos;
+class ImapreaderController extends Controller
+{
+    public function index() 
+
+    {
+        $meses =  ['janeiro', 'fevereiro', 'março', 'abril', 'maio','junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
+        // ****** Obtém as informações de conexão ao servidor IMAP do .env
+        $host = env('IMAP_SERVIDOR', '');
+        $usuario = env('IMAP_USUARIO', '');
+        $pass = env('IMAP_SENHA', '');
+
+        // ****** Conecta ao servidor IMAP
+        $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
+
+        if ($mbox) {
+
+            $emails = imap_search($mbox,'UNSEEN');
+            if($emails) {
+                rsort($emails);
+
+                foreach($emails as $email_number) {
+            
+                    $texto = imap_fetchbody($mbox,$email_number,1);
+                    $message = imap_qprint($texto);
+
+                    $pieces = explode(":", $message);
+
+                    // ****** Obtém as informações do body da mensagem de email removendo o \r\n
+                    // ****** as informações a serem obtidas são: Nome, Telefone, E-mail, site, datahora, remoteIP
+
+                    $nome = substr($pieces[2], 0, strpos($pieces[2], 'Telefone') - 2);
+                    $nome = substr($nome, 1, strpos($nome, '\r\n')-3);
+                    $telefone = substr($pieces[3], 0, strpos($pieces[3], 'E-mail') - 2);
+                    $telefone = substr($telefone, 1, strpos($telefone, '\r\n')-3);
+                    $email =  substr($pieces[4], 0, strpos($pieces[4], '---') - 2);
+                    $email = substr($email, 1, strpos($email, '\r\n')-6);
+                    $dt = substr($pieces[5], 0, strpos($pieces[5], 'Time') - 2);
+                    $hora = $pieces[6] . ':' . substr($pieces[7], 0, strpos($pieces[7], 'Page') - 2);
+                    $hora = substr($hora, 0, strpos($hora, '\r\n')-3);
+                    $url = substr($pieces[9], 0, strpos($pieces[9], 'User') - 2);
+                    $url = substr($url, 2, strpos($url, '\r\n')-3);
+                    $remoteIP = substr($pieces[11], 0, strpos($pieces[11], 'Po') - 2);
+                    $remoteIP = substr($remoteIP, 1, strpos($remoteIP, '\r\n')-3);
+
+                    // ****** transforma da data em YYYY-MM_dd HH:MM
+                    $dt2 = explode(' ', $dt);
+                    $dia = $dt2[1]; 
+                    $mes = 0;
+                    for ($i = 0; $i < count($meses); $i++) {
+                        $pos = strpos($dt, $meses[$i]);
+                        if ($pos != false) {
+                            $mes = $i +1;
+                        }
+                    }
+                    $ano = substr($dt2[5], 0, strpos($dt, '\r\n')-2);
+                    $dataH =  $ano . '-' . $mes . '-' . $dia . ' '. $hora;
+
+                    //***** Insere o contato na tabela de Contatos
+
+                    $input = [
+                        'nome' => $nome,
+                        'email' => $email,
+                        'telefone' => $telefone,
+                        'site' => $url,
+                        'datahora' => $dataH,
+                        'remoteip' => $remoteIP
+                    ];
+                     
+                    try {
+
+                        $contatos = Contatos::create($input);
+                        
+                        echo $input['nome'] . ' => Contato inserido com sucesso!';
+            
+                    } catch (ModelNotFoundException $e) {
+            
+                        echo $input['nome'] . ' =>Erro ao inserir o contato.';
+                        
+                    }
+                    
+                    // marca como lido
+                    // imap_setflag_full($mbox,imap_uid($mbox,$email_number),'\\SEEN');
+
+                }
+
+            }
+       
+            imap_close($mbox);
+        } else {
+            echo "Não foi possíve abrir a caixa de email.";
+        }
+    }
+}
