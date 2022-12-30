@@ -265,7 +265,7 @@ class ContatosController extends Controller
      * description="Exclui o contato por seu ID.",
      * operationId="contato6",
      * tags={"Contato"},
-     * @OA\Response(response="201", description="Contato excluído com suceso.",
+     * @OA\Response(response="201", description="Contato excluído com sucesso.",
      *    @OA\JsonContent(
      *       @OA\Property(property="excluído", type="string", example="true")
      *    )

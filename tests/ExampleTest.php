@@ -17,6 +17,6 @@ class ExampleTest extends TestCase
 
         $this->get('/');
 
-        $this->assertEquals($this->app->version(), $this->response->getContent());
+        $this->assertEquals('Highleads-backend - ' . $this->app->version(), $this->response->getContent());
     }
 }

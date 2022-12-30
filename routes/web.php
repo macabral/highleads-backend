@@ -39,16 +39,17 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
 
     $router->post('/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
 
-    $router->get('/usuarios', ['uses' =>  'UsuariosController@lista', 'as' => 'usuarios_lista', 'middleware' => 'auth']);
+    //$router->get('/usuarios', ['uses' =>  'UsuariosController@index', 'as' => 'usuarios_lista', 'middleware' => 'auth']);
     $router->get('/usuarios-profile', ['uses' =>  'UsuariosController@profile', 'as' => 'usuarios_profile', 'middleware' => 'auth']);
 
-    $router->post('/api/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
+    //$router->post('/api/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
 
 });
 
-$router->post('/login', ['uses' =>  'AuthController@login', 'as' => 'auth_login']);
-$router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
-
+$router->post('/api/login', ['uses' =>  'AuthController@login', 'as' => 'auth_login']);
+$router->get('/api/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
+$router->get('/api/usuarios', ['uses' =>  'UsuariosController@index', 'as' => 'usuarios_lista']);
+$router->post('/api/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
 
 $router->get('/', function () use ($router) {
     return "Highleads-backend - " . $router->app->version();

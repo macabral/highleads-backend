@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use  App\Models\Usuarios;
 
 class UsuariosController extends Controller
 {
-    public function profile()
+
+    /**
+     * @OA\Get(
+     * path="/api/usuarios/",
+     * summary="Exibe os usuarios cadastrados",
+     * description="Exibe os usuarios cadastrados.",
+     * tags={"Usuários"},
+     * @OA\Response(response="200", description="Usuários."),
+     * )
+     */
+    public function index()
     {
-        return response()->json(['user' => Auth::usuarios()], 200);
+        return Usuarios::all();
     }
 
-    public function lista()
-    {
-         return response()->json(['users' =>  Usuarios::all()], 200);
-    }
 }

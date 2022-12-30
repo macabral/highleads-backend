@@ -8,11 +8,32 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 class ContatosTest extends TestCase
 {
 
+    public function test_incluir_novo_contato()
+    {
+        $this->withoutMiddleware();
+
+        $this
+            ->post('/api/contatos', [
+                "site" => "https://teste.com/teste/",
+                "remoteip" => "127.0.0.1",
+                "datahora" => "2022-12-13 14:50:00",
+                "nome" => "José da Silva",
+                "email" => "jsl@gmail.com",
+                "telefone" => "219999999"
+            ]);
+            
+        $this
+            ->seeJson(['created' => true]);
+
+    }
+
     public function test_retorna_lista_de_contatos()
     {
 
+        $this->withoutMiddleware();
+
         $this
-            ->get('/contatos')
+            ->get('/api/contatos')
             ->seeStatusCode(200);
             
     }
@@ -21,16 +42,16 @@ class ContatosTest extends TestCase
     {
 
         $this
-            ->get('/contatos/1')
+            ->get('/api/contatos/1', ['HTTP_AUTHORIZATION' => 'Bearer' . $this->token])
             ->seeStatusCode(200)
             ->seeJson([
-                "id" => 1,
-                "site" => "https://asdasd-one",
-                "remoteip" => "127.0.0.1",
-                "datahora" => "2022-12-13 14:50:00",
-                "nome"  => "José da Silva",
-                "email"  => "marcoascabral@gmail.com",
-                "telefone"  => "21998045272",
+                "id" =>  1,
+                "site" => "https://teste.com/teste/",
+                "remoteip" =>  "127.0.0.1",
+                "datahora" =>  "2022-12-13 14:50:00",
+                "nome" =>  "José da Silva",
+                "email" =>  "jsl@gmail.com",
+                "telefone" =>  "219999999"
             ]);
             $data = json_decode($this->response->getContent(), true);
             $this->assertArrayHasKey('created_at', $data);
@@ -42,7 +63,7 @@ class ContatosTest extends TestCase
     {
 
         $this
-            ->get('contatos/0')
+            ->get('/api/contatos/0', ['HTTP_AUTHORIZATION' => 'Bearer' . $this->token])
             ->seeStatusCode(404)
             ->seeJson([
                 'error' => [
@@ -52,37 +73,14 @@ class ContatosTest extends TestCase
 
     }
 
-    public function test_incluir_novo_contato()
-    {
-
-        $this
-            ->post('/contatos', [
-                "site" => "https://zoit.com.br/teste/",
-                "remoteip" => "127.0.0.1",
-                "datahora" => "2022-12-13 14:50:00",
-                "nome" => "José da Silva",
-                "email" => "marcoascabral@gmail.com",
-                "telefone" => "21998045272",
-                "created_at" => "2022-12-23T16:53:08.000000Z",
-                "updated_at" => "2022-12-23T16:53:08.000000Z",
-
-            ]);
-            
-        $this
-            ->seeJson(['created' => true])
-            ->seeInDatabase('contatos', ['site' => 'https://zoit.com.br/teste/']);
-
-    }
-
     public function test_alterar_contato()
     {
-
 
         $this
             ->notSeeInDatabase('contatos',['site' => 'https://zoit.com.br/outro9/']);
 
         $this
-            ->put('/contatos/4', [
+            ->put('/api/contatos/1', [
                 "site" => "https://zoit.com.br/outro9/",
                 "remoteip" => "127.0.0.1",
                 "datahora" => "2022-12-13 14:50:00",
@@ -90,7 +88,8 @@ class ContatosTest extends TestCase
                 "email" => "marcoascabral@gmail.com",
                 "telefone" => "21998045272",
 
-            ]);
+            ],
+            ['HTTP_AUTHORIZATION' => 'Bearer' . $this->token]);
             
         $this
             ->seeStatusCode(201)
@@ -102,7 +101,7 @@ class ContatosTest extends TestCase
     {
 
         $this
-            ->delete('contatos/7')
+            ->delete('/api/contatos/1')
             ->seeStatusCode(204)
             ->isEmpty();
 
@@ -111,8 +110,9 @@ class ContatosTest extends TestCase
 
     public function test_rota_invalida_excluir()
     {
+
         $this
-            ->delete('/contatos/invalido')
+            ->delete('/api/contatos/invalido')
             ->seeStatusCode(404);
     }
 

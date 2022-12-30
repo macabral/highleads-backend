@@ -1230,6 +1230,21 @@
                     }
                 }
             }
+        },
+        "/api/usuarios/": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Exibe os usuarios cadastrados",
+                "description": "Exibe os usuarios cadastrados.",
+                "operationId": "8c5755b4919645cc9afb91320bd9a3e4",
+                "responses": {
+                    "200": {
+                        "description": "Usuários."
+                    }
+                }
+            }
         }
     }
 }
