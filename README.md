@@ -62,7 +62,9 @@ O serviço de emails é responsável pelo envio de emais do highleads. Todos os 
 
 ### Executando os testes
 
-Para executar os testes do highleads-backend execute o comando "composer tests".  Ainda em desenvolvimento.
+Para executar os testes do highleads-backend execute o comando "composer tests". Os testes são executados sem o middleware de autenticação (token).  Para a execução dos teste é recomendável que as tabelas estejam truncadas.
+
+Ainda em desenvolvimento.
 
 
 ## highleads frontend

@@ -41,8 +41,10 @@ class ContatosTest extends TestCase
     public function test_retorna_um_contato_valido()
     {
 
+        $this->withoutMiddleware();
+
         $this
-            ->get('/api/contatos/1', ['HTTP_AUTHORIZATION' => 'Bearer' . $this->token])
+            ->get('/api/contatos/1')
             ->seeStatusCode(200)
             ->seeJson([
                 "id" =>  1,
@@ -62,8 +64,10 @@ class ContatosTest extends TestCase
     public function test_retorna_um_contato_invalido()
     {
 
+        $this->withoutMiddleware();
+
         $this
-            ->get('/api/contatos/0', ['HTTP_AUTHORIZATION' => 'Bearer' . $this->token])
+            ->get('/api/contatos/0')
             ->seeStatusCode(404)
             ->seeJson([
                 'error' => [
@@ -76,6 +80,8 @@ class ContatosTest extends TestCase
     public function test_alterar_contato()
     {
 
+        $this->withoutMiddleware();
+        
         $this
             ->notSeeInDatabase('contatos',['site' => 'https://zoit.com.br/outro9/']);
 
@@ -88,8 +94,7 @@ class ContatosTest extends TestCase
                 "email" => "marcoascabral@gmail.com",
                 "telefone" => "21998045272",
 
-            ],
-            ['HTTP_AUTHORIZATION' => 'Bearer' . $this->token]);
+            ]);
             
         $this
             ->seeStatusCode(201)
@@ -99,6 +104,8 @@ class ContatosTest extends TestCase
 
     public function test_exclui_um_contato()
     {
+
+        $this->withoutMiddleware();
 
         $this
             ->delete('/api/contatos/1')
@@ -110,6 +117,8 @@ class ContatosTest extends TestCase
 
     public function test_rota_invalida_excluir()
     {
+
+        $this->withoutMiddleware();
 
         $this
             ->delete('/api/contatos/invalido')
