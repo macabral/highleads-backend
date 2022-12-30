@@ -7,7 +7,7 @@ Geralmente as landing pages são construídas em Word Press e você utiliza um f
 
 Gerenciar os leads em uma conta de email é muito difícil. Assim, o Highleads tem essa função, ler essa conta de email (IMAP), guardar as informações dos interessados em um banco de dados e gerenciar essas informações para a prospecção de futuros clientes.
 
-O Highleds possui um serviço backend e o gerencimanto dos leads é realizado no frontend.  Tudo isso vai rodar no mesmo servidor que você publica suas páginas.
+O Highleds possui um serviço backend e o gerencimanto dos leads é realizado no frontend.  Tudo isso vai rodar no mesmo servidor que você publica as suas landing pages.
 
 
 ## highleads backend
