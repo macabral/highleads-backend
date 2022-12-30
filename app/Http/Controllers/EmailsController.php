@@ -301,25 +301,23 @@ class EmailsController extends Controller
     {
         require base_path("vendor/autoload.php");
 
-        $configuracoes = DB::table('configuracoes')->get();
-        $config = $configuracoes[0];
 
         $mail = new PHPMailer(true);
 
         //Server settings
         $mail->SMTPDebug = 0;                                       //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = $config->smtp_host;                     //Set the SMTP server to send through
+        $mail->Host       = env('SMTP_HOST', '');                   //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = $config->smtp_user;                     //SMTP username
-        $mail->Password   = $config->smtp_pass;                     //SMTP password
+        $mail->Username   = env('SMTP_USERNAME', '');               //SMTP username
+        $mail->Password   = env('SMTP_PASSWORD', '');               //SMTP password
         $mail->SMTPSecure = true;                                   //Enable implicit TLS encryption
-        $mail->Port       = $config->smtp_port;                     //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->Port       = env('SMTP_PORT', '');                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-        $cursor = Emails::all()->where('enviado',0)->take(10)->sortBy('prioridade');
+        $cursor = Emails::all()->where('enviado', 0)->take(10)->sortBy('prioridade');
 
-        $mail->addReplyTo($config->smtp_user, $config->nome);
-        $mail->setFrom($config->smtp_user, $config->nome);
+        $mail->addReplyTo($mail->Username);
+        $mail->setFrom($mail->Username);
         $mail->isHTML(true);
 
         foreach ($cursor as $item) {

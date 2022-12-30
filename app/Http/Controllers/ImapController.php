@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Contatos;
-class ImapreaderController extends Controller
+class ImapController extends Controller
 {
     public function index() 
 
@@ -12,11 +12,13 @@ class ImapreaderController extends Controller
         $meses =  ['janeiro', 'fevereiro', 'março', 'abril', 'maio','junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
         // ****** Obtém as informações de conexão ao servidor IMAP do .env
+
         $host = env('IMAP_SERVIDOR', '');
         $usuario = env('IMAP_USUARIO', '');
         $pass = env('IMAP_SENHA', '');
 
         // ****** Conecta ao servidor IMAP
+        
         $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
 
         if ($mbox) {

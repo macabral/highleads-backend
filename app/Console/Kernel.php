@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
   
-        //$schedule->exec('node imap-reader/index.js')->everyMinute();
+        $schedule->call('App\Http\Controllers\ImapController@index')->everyTenMinutes();
         $schedule->call('App\Http\Controllers\EmailsController@send')->everyTenMinutes();
 
 
