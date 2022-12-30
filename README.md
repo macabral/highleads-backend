@@ -52,7 +52,7 @@ O Highleads-backend executa dois serviços cron:
 1. para ler os emails (IMAP)
 2. para enviar os emails
 
-Para alterar o agendamento dos serviços altere em app/Console/Kernel.php.
+Para alterar o agendamento dos serviços altere em app/Console/Kernel.php.  Hoje estão configurados para execução de 10 em 10 minutos.
 
 Para executar o serviços "php artisan schedule:run" ou "php artisan schedule:work".
 
