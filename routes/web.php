@@ -32,10 +32,10 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->get('/emails', ['uses' => 'EmailsController@index','as' => 'emails']);
     $router->get('/emails/{id}', ['uses' => 'EmailsController@show','as' => 'find_emails']);
     $router->get('/emails-search', ['uses' => 'EmailsController@search','as' => 'search_emails']);
+    $router->get('/emails-send', ['uses' => 'EmailsController@send','as' => 'send_email']);
     $router->post('/emails', ['uses' => 'EmailsController@store','as' => 'new_emails']);
     $router->put('/emails/{id}', ['uses' => 'EmailsController@update','as' => 'update_emails']);
     $router->delete('/emails/{id}', ['uses' => 'EmailsController@destroy','as' => 'delete_emails']);
-
 
     $router->post('/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
 
@@ -46,10 +46,9 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
 
 });
 
-
 $router->post('/login', ['uses' =>  'AuthController@login', 'as' => 'auth_login']);
 $router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
-$router->get('/emails-send', ['uses' => 'EmailsController@send','as' => 'send_email']);
+
 
 $router->get('/', function () use ($router) {
     return "Highleads-backend - " . $router->app->version();

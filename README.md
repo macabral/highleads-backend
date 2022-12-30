@@ -60,6 +60,10 @@ O serviço IMAP lê os emails encaminhados pelo formulário da landing page, rec
 
 O serviço de emails é responsável pelo envio de emais do highleads. Todos os emails gerados são armazenados na tabela emails e são enviados por esse serviço.
 
+### Executando os testes
+
+Para executar os testes do highleads-backend execute o comando "composer tests".  Ainda em desenvolvimento.
+
 
 ## highleads frontend
 
