@@ -7,6 +7,8 @@ Geralmente as landing pages são construídas em Word Press e você utiliza um f
 
 Gerenciar os leads em uma conta de email é muito trabalhoso. Assim, o Highleads automatiza o processo de captação de leads. Ele lê a conta de email (IMAP), armazena as informações dos leads em um banco de dados e gerencia essas informações para a prospecção de futuros clientes.
 
+Você pode ter várias landing pages apontando para a mesma conta de email.
+
 O Highleds possui um serviço backend para o serviço de API e o frontend - interface para o gerenciamento dos leads.  Esses serviços podem ser executados no mesmo servidor que você publica as suas landing pages.
 
 
