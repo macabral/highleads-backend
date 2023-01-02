@@ -8,5 +8,5 @@ class Contatos extends Model
 {
     protected $table = 'contatos';
     
-    protected $fillable = ['site','remoteip','datahora','nome','email','telefone'];
+    protected $fillable = ['site','remoteip','datahora','nome','email','telefone','sites_fk'];
 }

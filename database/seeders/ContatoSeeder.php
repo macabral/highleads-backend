@@ -17,7 +17,7 @@ class ContatoSeeder extends Seeder
     {
         DB::table('contatos')->insert([
             [
-                'site' => 'https://zoit.com.br/consultoria/',
+                'site' => 'teste.com.br/consultoria/',
                 'remoteip' => '127.0.0.1',
                 'datahora' => '2022-12-13 14:50',
                 'nome' => 'José da Silva',

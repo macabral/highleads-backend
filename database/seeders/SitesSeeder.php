@@ -17,7 +17,7 @@ class SitesSeeder extends Seeder
     {
         DB::table('sites')->insert([
             [
-                'pagina' => 'https://zoit.com.br/consultoria/',
+                'pagina' => 'teste.com.br/consultoria',
                 'responsavel' => 'José da Silva',
                 'email'  => 'teste@teste.com',
                 'telefone' => '21999999999', 

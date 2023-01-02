@@ -5,29 +5,29 @@ para que o interessado informe seus dados de contato (nome, email e telefone).
 
 Geralmente as landing pages são construídas em Word Press e você utiliza um formulário que encaminha os dados do interessado para uma conta de email.
 
-Gerenciar os leads em uma conta de email é muito trabalhoso. Assim, o Highleads automatiza o processo de captação de leads. Ele lê a conta de email (IMAP), armazena as informações dos leads em um banco de dados e gerencia essas informações para a prospecção de futuros clientes.
+Gerenciar os leads em uma conta de email é muito trabalhoso. Assim, o HighLeads automatiza o processo de captação de leads. Ele lê a conta de email (IMAP), armazena as informações dos leads em um banco de dados e gerencia essas informações para a prospecção de futuros clientes.
 
 Você pode ter várias landing pages apontando para a mesma conta de email.
 
 O Highleds possui um serviço backend para o serviço de API e o frontend - interface para o gerenciamento dos leads.  Esses serviços podem ser executados no mesmo servidor que você publica as suas landing pages.
 
 
-## highleads backend
+## HighLeads backend
 
 O serviço backend foi desenvolvido utilizando o framework laravel/lumen. Isso porque geralmente você hospeda sua landing page em servidores "shared hosts" que possuem o Word Press instalado, fornecem conta de email e serviço de banco de dados.  Assim, é mais fácil colocar tudo em um mesmo servidor.
 
 ### Setup do ambiente local
 
-O highleads-backend roda com o PHP 8 e laravel/lumen 9.
+O HighLeads-backend roda com o PHP 8 e laravel/lumen 9.
 
 1. instale o Composer  (https://getcomposer.org/download/)
 2. faça o download do PHP 8 e configure o ambiente (path) (https://www.php.net/downloads.php)
 3. verifique se as extensões no php.ini estão habilitadas (extension=imap, extension=mbstring)
-4. faça o download do highleads-backend
+4. faça o download do HighLeads-backend
 5. execute o comando  "composer install"
 ### Configurações iniciais
 
-Para configurar o highleads-backend siga os passos:
+Para configurar o HighLeads-backend siga os passos:
 
 1. renomeie o arquivo .env.example para .env
 2. edite o arquivo .env e preencha as informações de conexão ao banco de dados, servidor IMAP e SMTP
@@ -39,17 +39,17 @@ Para configurar o highleads-backend siga os passos:
 
 ### Documentação da API
 
-Para acessar a documentação da API highleads-backend vá ao endereço: http://localhost:8000/api/documentation e altere o endereço para http://localhost:8000/docs
+Para acessar a documentação da API HighLeads-backend vá ao endereço: http://localhost:8000/api/documentation e altere o endereço para http://localhost:8000/docs
 
 A documentação segue o padrão Swagger.  
 
 Para publicar qualquer alteração na documentação utilize o comando "php artisan swagger-lume:generate" e "php artisan swagger-lume:publish".
 
-Para obter as rotas "php artisan route:list".
+Para obter a lista das rotas: "php artisan route:list".
 
 ### Serviços Agendados
 
-O Highleads-backend executa dois serviços cron:
+O HighLeads-backend executa dois serviços cron:
 
 1. para ler os emails (IMAP)
 2. para enviar os emails
@@ -58,28 +58,28 @@ Para alterar o agendamento dos serviços altere em app/Console/Kernel.php.  Hoje
 
 Para executar o serviços "php artisan schedule:run" ou "php artisan schedule:work".
 
-O serviço IMAP lê os emails encaminhados pelo formulário da landing page, recupera as informações do formulário, verifica se o email está na lista negra (tabela blacklist), grava as informações no banco de dados e encaminha um email para o reponsável pela landing page (registrado na tabela sites).
+O serviço IMAP lê os emails encaminhados pelo formulário da landing page, recupera as informações do formulário, verifica se o email está na lista negra (tabela blacklist), grava as informações no banco de dados e encaminha um email para o responsável pela landing page (registrado na tabela sites).
 
 O serviço de email é responsável pelo envio dos emails armazenados na tabela emails..
 
 ### Executando os testes
 
-Para executar os testes do highleads-backend execute o comando "composer tests". Os testes são executados sem o middleware de autenticação (token).  Para a execução dos teste as tabelas devem estar truncadas.
+Para executar os testes do HighLeads-backend execute o comando "composer tests". Os testes são executados sem o middleware de autenticação (token).  Para a execução dos teste as tabelas devem estar truncadas.
 
 Ainda em desenvolvimento.
 
 ### Tabelas
 
 - contatos    : armazena os dados dos formulários das landing pages
-- usuarios    : cadastro de usuários do HighLeads
-- sites       : lista as páginas (landing pages) associadas aos reponsáveis pelo contato com os contatos
+- usuarios    : cadastro de usuários
+- sites       : lista as páginas (landing pages) associadas aos seus responsáveis
 - blacklist   : lista dos emails cadastrados para não serem incluídos como contatos
 - emails      : lista os emails a serem enviados pela plataforma HighLeads
 
 Para detalhes das tabelas veja na pasta \database\migrations.
 
 
-## highleads frontend
+## HighLeads frontend
 
 O frontend (ainda em desenvolvimento) utilizará o NUXT (Vue) como um SPA (Single Page Application) que também será disponibilizado no mesmo servidor "shared host".
 

@@ -22,9 +22,11 @@ return new class extends Migration
             $table->string('nome', 80);
             $table->string('email', 80);
             $table->string('telefone', 15);
+            $table->integer('sites_fk')->unsigned()->nullable();
             $table->timestamps();
             
             $table->index('email');
+            $table->foreign('sites_fk')->references('id')->on('sites');
 
         });
     }

@@ -76,28 +76,6 @@ class ImapController extends Controller
 
                     if (count($ret) == 0) {
 
-                        // ***** Insere o contato na tabela de Contatos
-
-                        $input = [
-                            'nome' => $nome,
-                            'email' => $email,
-                            'telefone' => $telefone,
-                            'site' => $url,
-                            'datahora' => $dataH,
-                            'remoteip' => $remoteIP
-                        ];
-                        
-                        try {
-
-                            $contatos = Contatos::create($input);
-                            
-               
-                        } catch (ModelNotFoundException $e) {
-                
-                            echo $input['nome'] . ' =>Erro ao inserir o contato.';
-                            
-                        }
-
                         // ****** procura o responsável pela landing page
                         
                         $ret = Sites::where('pagina', $url)->get();
@@ -105,30 +83,53 @@ class ImapController extends Controller
                         if (count($ret) > 0) {
                             $ret = json_decode($ret[0]);
 
-                            // ****** envia email para o responsável pela landing page
+                            // ***** Insere o contato na tabela de Contatos
 
                             $input = [
-                                "para" => $ret->email,
-                                "assunto" => "[$appSigla] Novo Contato",
-                                "prioridade" => 0,
-                                "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
+                                'nome' => $nome,
+                                'email' => $email,
+                                'telefone' => $telefone,
+                                'site' => $url,
+                                'datahora' => $dataH,
+                                'remoteip' => $remoteIP,
+                                'sites_fk' => $ret->id
                             ];
-
+                            
                             try {
 
-                                Emails::create($input);
+                                $contatos = Contatos::create($input);
                                 
+                                // ****** envia email para o responsável pela landing page
+
+                                $input = [
+                                    "para" => $ret->email,
+                                    "assunto" => "[$appSigla] Novo Contato",
+                                    "prioridade" => 0,
+                                    "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
+                                ];
+
+                                try {
+
+                                    Emails::create($input);
+                                    
+                                } catch (ModelNotFoundException $e) {
+                        
+                                    echo 'Erro ao inserir email.';
+                                    
+                                }                                
+                
                             } catch (ModelNotFoundException $e) {
                     
-                                echo 'Erro ao inserir email.';
+                                echo $input['nome'] . ' =>Erro ao inserir o contato.';
                                 
                             }
+
                             
                         }
+
                     }
 
-
-                    
+                   
                     // marca como lido
                     // imap_setflag_full($mbox,imap_uid($mbox,$email_number),'\\SEEN');
 
