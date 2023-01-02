@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('erro')->default(0);
             $table->integer('enviado')->default(0);
             $table->string('anexos', 255)->default('');
-            $table->tinyInteger('prioridade');
+            $table->tinyInteger('prioridade')->default(1);
             $table->timestamps();
         
             $table->index('prioridade');

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Contatos;
+use App\Models\Blacklistas;
+use App\Models\Sites;
+use App\Models\Emails;
 class ImapController extends Controller
 {
     public function index() 
@@ -64,28 +67,64 @@ class ImapController extends Controller
                     $ano = substr($dt2[5], 0, strpos($dt, '\r\n')-2);
                     $dataH =  $ano . '-' . $mes . '-' . $dia . ' '. $hora;
 
-                    //***** Insere o contato na tabela de Contatos
+                    // ***** Verifica se o email do contato está na lista negra (blacklist)
 
-                    $input = [
-                        'nome' => $nome,
-                        'email' => $email,
-                        'telefone' => $telefone,
-                        'site' => $url,
-                        'datahora' => $dataH,
-                        'remoteip' => $remoteIP
-                    ];
-                     
-                    try {
+                    $ret = Blacklistas::where('texto', $email)->get();
 
-                        $contatos = Contatos::create($input);
+                    if (count($ret) == 0) {
+
+                        // ***** Insere o contato na tabela de Contatos
+
+                        $input = [
+                            'nome' => $nome,
+                            'email' => $email,
+                            'telefone' => $telefone,
+                            'site' => $url,
+                            'datahora' => $dataH,
+                            'remoteip' => $remoteIP
+                        ];
                         
-                        echo $input['nome'] . ' => Contato inserido com sucesso!';
-            
-                    } catch (ModelNotFoundException $e) {
-            
-                        echo $input['nome'] . ' =>Erro ao inserir o contato.';
+                        try {
+
+                            $contatos = Contatos::create($input);
+                            
+               
+                        } catch (ModelNotFoundException $e) {
+                
+                            echo $input['nome'] . ' =>Erro ao inserir o contato.';
+                            
+                        }
+
+                        // ****** procura o responsável pela landing page
                         
+                        $ret = Sites::where('pagina', $url)->get();
+
+                        if (count($ret) > 0) {
+                            $ret = json_decode($ret[0]);
+
+                            // ****** envia email para o responsável pela landing page
+
+                            $input = [
+                                "para" => $ret->email,
+                                "assunto" => "[HighLeads] Novo Contato",
+                                "prioridade" => 0,
+                                "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone"
+                            ];
+
+                            try {
+
+                                Emails::create($input);
+                                
+                            } catch (ModelNotFoundException $e) {
+                    
+                                echo 'Erro ao inserir email.';
+                                
+                            }
+                            
+                        }
                     }
+
+
                     
                     // marca como lido
                     // imap_setflag_full($mbox,imap_uid($mbox,$email_number),'\\SEEN');

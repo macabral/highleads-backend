@@ -314,7 +314,7 @@ class EmailsController extends Controller
         $mail->SMTPSecure = true;                                   //Enable implicit TLS encryption
         $mail->Port       = env('SMTP_PORT', '');                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-        $cursor = Emails::all()->where('enviado', 0)->take(10)->sortBy('prioridade');
+        $cursor = Emails::all()->where('enviado','=',0)->take(10)->sortBy('prioridade');
 
         $mail->addReplyTo($mail->Username);
         $mail->setFrom($mail->Username);
@@ -349,7 +349,7 @@ class EmailsController extends Controller
             $mail->Subject = utf8_decode($item->assunto);
 
             // Email body content
-            $content = '<font face="verdana" size="2">' . $item->texto . '<br><br>Atenciosamente, <br>ZOIT<br>';
+            $content = '<font face="verdana" size="2">' . $item->texto . '  <p>Atenciosamente,<br><br>HighLeads - Gerenciamento de Leads';
             $mail->Body = utf8_decode($content);
 
             // Anexos

@@ -211,7 +211,7 @@ class SitesController extends Controller
         $this->validate($request, [
             'pagina' => 'max:255',
             'responsavel' => 'max:80',
-            'email' => 'rmax:80',
+            'email' => 'max:80',
             'telefone' => 'max:15'
         ]);
 
@@ -228,6 +228,7 @@ class SitesController extends Controller
         $input = $request->all();
 
         try {
+            
             $sites->fill($input);
 
         } catch (\Exception $e) {
