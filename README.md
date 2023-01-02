@@ -62,9 +62,19 @@ O serviço de emails é responsável pelo envio de emais do highleads. Todos os 
 
 ### Executando os testes
 
-Para executar os testes do highleads-backend execute o comando "composer tests". Os testes são executados sem o middleware de autenticação (token).  Para a execução dos teste é recomendável que as tabelas estejam truncadas.
+Para executar os testes do highleads-backend execute o comando "composer tests". Os testes são executados sem o middleware de autenticação (token).  Para a execução dos teste as tabelas devem estar truncadas.
 
 Ainda em desenvolvimento.
+
+### Tabelas
+
+contatos    : armazena os dados dos formulários das landing pages
+usuarios    : cadastro de usuários do HighLeads
+sites       : lista as páginas (landing pages) associadas aos reponsáveis pelo contato com os contatos
+blacklist   : lista dos emails cadastrados para não serem incluídos como contatos
+emails      : lista os emails a serem enviados pela plataforma HighLeads
+
+Para detalhes das tabelas veja na pasta \database\migrations.
 
 
 ## highleads frontend
