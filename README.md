@@ -5,9 +5,9 @@ para que o interessado informe seus dados de contato (nome, email e telefone).
 
 Geralmente as landing pages são construídas em Word Press e você utiliza um formulário que encaminha os dados do interessado para uma conta de email.
 
-Gerenciar os leads em uma conta de email é muito difícil. Assim, o Highleads tem essa função, ler essa conta de email (IMAP), guardar as informações dos interessados em um banco de dados e gerenciar essas informações para a prospecção de futuros clientes.
+Gerenciar os leads em uma conta de email é muito trabalhoso. Assim, o Highleads automatiza o processo de captação de leads. Ele lê a conta de email (IMAP), armazena as informações dos leads em um banco de dados e gerencia essas informações para a prospecção de futuros clientes.
 
-O Highleds possui um serviço backend e o gerencimanto dos leads é realizado no frontend.  Tudo isso vai rodar no mesmo servidor que você publica as suas landing pages.
+O Highleds possui um serviço backend para o serviço de API e o frontend - interface para o gerenciamento dos leads.  Esses serviços podem ser executados no mesmo servidor que você publica as suas landing pages.
 
 
 ## highleads backend
@@ -58,7 +58,7 @@ Para executar o serviços "php artisan schedule:run" ou "php artisan schedule:wo
 
 O serviço IMAP lê os emails encaminhados pelo formulário da landing page, recupera as informações do formulário, verifica se o email está na lista negra (tabela blacklist), grava as informações no banco de dados e encaminha um email para o reponsável pela landing page (registrado na tabela sites).
 
-O serviço de emails é responsável pelo envio de emais do highleads. Todos os emails gerados são armazenados na tabela emails e são enviados por esse serviço.
+O serviço de email é responsável pelo envio dos emails armazenados na tabela emails..
 
 ### Executando os testes
 
@@ -68,11 +68,11 @@ Ainda em desenvolvimento.
 
 ### Tabelas
 
-contatos    : armazena os dados dos formulários das landing pages
-usuarios    : cadastro de usuários do HighLeads
-sites       : lista as páginas (landing pages) associadas aos reponsáveis pelo contato com os contatos
-blacklist   : lista dos emails cadastrados para não serem incluídos como contatos
-emails      : lista os emails a serem enviados pela plataforma HighLeads
+- contatos    : armazena os dados dos formulários das landing pages
+- usuarios    : cadastro de usuários do HighLeads
+- sites       : lista as páginas (landing pages) associadas aos reponsáveis pelo contato com os contatos
+- blacklist   : lista dos emails cadastrados para não serem incluídos como contatos
+- emails      : lista os emails a serem enviados pela plataforma HighLeads
 
 Para detalhes das tabelas veja na pasta \database\migrations.
 

@@ -13,7 +13,7 @@ class ImapController extends Controller
 
     {
         $meses =  ['janeiro', 'fevereiro', 'março', 'abril', 'maio','junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-        $appSigla = env('APP_SIGLA', 'HighLeads');
+        $appSigla = env('APP_SIGLA');
 
         // ****** Obtém as informações de conexão ao servidor IMAP do .env
 
