@@ -13,6 +13,7 @@ class ImapController extends Controller
 
     {
         $meses =  ['janeiro', 'fevereiro', 'março', 'abril', 'maio','junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+        $appSigla = env('APP_SIGLA', 'HighLeads');
 
         // ****** Obtém as informações de conexão ao servidor IMAP do .env
 
@@ -22,7 +23,8 @@ class ImapController extends Controller
 
         // ****** Conecta ao servidor IMAP
         
-        $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
+        // $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
+        $mbox = imap_open($host, $usuario, $pass);
 
         if ($mbox) {
 
@@ -48,7 +50,7 @@ class ImapController extends Controller
                     $email = substr($email, 1, strpos($email, '\r\n')-6);
                     $dt = substr($pieces[5], 0, strpos($pieces[5], 'Time') - 2);
                     $hora = $pieces[6] . ':' . substr($pieces[7], 0, strpos($pieces[7], 'Page') - 2);
-                    $hora = substr($hora, 0, strpos($hora, '\r\n')-3);
+                    $hora = substr($hora, 0, strpos($hora, '\r\n')-2);
                     $url = substr($pieces[9], 0, strpos($pieces[9], 'User') - 2);
                     $url = substr($url, 2, strpos($url, '\r\n')-3);
                     $remoteIP = substr($pieces[11], 0, strpos($pieces[11], 'Po') - 2);
@@ -66,6 +68,7 @@ class ImapController extends Controller
                     }
                     $ano = substr($dt2[5], 0, strpos($dt, '\r\n')-2);
                     $dataH =  $ano . '-' . $mes . '-' . $dia . ' '. $hora;
+                    $dataEmail = $dia . '/' . $mes . '/' . $ano . ' ' . $hora;
 
                     // ***** Verifica se o email do contato está na lista negra (blacklist)
 
@@ -106,9 +109,9 @@ class ImapController extends Controller
 
                             $input = [
                                 "para" => $ret->email,
-                                "assunto" => "[HighLeads] Novo Contato",
+                                "assunto" => "[$appSigla] Novo Contato",
                                 "prioridade" => 0,
-                                "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone"
+                                "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
                             ];
 
                             try {

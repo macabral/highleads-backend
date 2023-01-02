@@ -300,7 +300,7 @@ class EmailsController extends Controller
     public function send()
     {
         require base_path("vendor/autoload.php");
-
+        $appNome = env('APP_NOME', 'HighLeads - Gerenciamento de Leads');
 
         $mail = new PHPMailer(true);
 
@@ -349,7 +349,7 @@ class EmailsController extends Controller
             $mail->Subject = utf8_decode($item->assunto);
 
             // Email body content
-            $content = '<font face="verdana" size="2">' . $item->texto . '  <p>Atenciosamente,<br><br>HighLeads - Gerenciamento de Leads';
+            $content = '<font face="verdana" size="2">' . $item->texto . "<br><p>Atenciosamente,<br><br>$appNome</p>";
             $mail->Body = utf8_decode($content);
 
             // Anexos
@@ -366,7 +366,6 @@ class EmailsController extends Controller
 
             try {
                 $mail->send();
-                echo 'Mensagem enviada.';
 
                 $emails = Emails::findOrFail($item->id);
                 $emails->enviado = 1;
