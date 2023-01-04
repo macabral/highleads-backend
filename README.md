@@ -12,7 +12,7 @@ Você pode ter várias landing pages apontando para a mesma conta de email.
 O Highleds possui um serviço backend para o serviço de API e o frontend - interface para o gerenciamento dos leads.  Esses serviços podem ser executados no mesmo servidor que você publica as suas landing pages.
 
 
-## HighLeads backend
+# HighLeads backend
 
 O serviço backend foi desenvolvido utilizando o framework laravel/lumen. Isso porque geralmente você hospeda sua landing page em servidores "shared hosts" que possuem o Word Press instalado, fornecem conta de email e serviço de banco de dados.  Assim, é mais fácil colocar tudo em um mesmo servidor.
 
@@ -94,7 +94,7 @@ Para detalhes das tabelas veja na pasta \database\migrations.
 2. Crie um serviço cron onde o Comando seja como: /usr/local/bin/php pasta_do_subdominio/artisan schedule:run
 3. Configure a frequência do serviço cron. Lembre que no HighLeads está configurado para execução de 10/10 minutos
 
-## HighLeads frontend
+# HighLeads frontend
 
 O frontend (ainda em desenvolvimento) utilizará o NUXT (Vue) como um SPA (Single Page Application) que também será disponibilizado no mesmo servidor "shared host".
 
