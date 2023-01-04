@@ -18,11 +18,11 @@ O serviço backend foi desenvolvido utilizando o framework laravel/lumen. Isso p
 
 ### Setup do ambiente local
 
-O HighLeads-backend roda com o PHP 8 e laravel/lumen 9.
+O HighLeads-backend roda com o PHP 8.0.27 e laravel/lumen 9.1.5.
 
 1. instale o Composer  (https://getcomposer.org/download/)
 2. faça o download do PHP 8 e configure o ambiente (path) (https://www.php.net/downloads.php)
-3. verifique se as extensões no php.ini estão habilitadas (extension=imap, extension=mbstring)
+3. verifique se as extensões no php.ini estão habilitadas (extension=imap, extension=mbstring, extension=pdo_mysql, extension=fileinfo)
 4. faça o download do HighLeads-backend
 5. execute o comando  "composer install"
 ### Configurações iniciais
@@ -78,6 +78,21 @@ Ainda em desenvolvimento.
 
 Para detalhes das tabelas veja na pasta \database\migrations.
 
+### Instalando o HighLeads no servidor (shared host)
+
+1. Crie um arquivo compactado TAR do HighLeads da sua instalação local
+2. Crie um subdominio em seu shared host. Utilize o nome api-highleads (por exemplo: https://api-highleads.dominio.com.br)
+2. Copie o arquivo compactado para a pasta do subdominio no shared host
+3. Acesse o servidor pelo SSH e vá para a pasta do subdominio
+4. Descompacte o arquivo com o comando tar -xvf <nome_do_arquivo_compactado.tar>
+5. Certifique que o .htacess foi copiado para a pasta raiz do subdominio
+6. Pronto. Teste acessando a url https://api-highleads.dominio.com.br no navegador
+
+
+### Configurando o serviço cron no servidor (shared host)
+1. No cPanel do servidor shared host acesse 'Trabalhos Cron'
+2. Crie um serviço cron onde o Comando seja como: /usr/local/bin/php pasta_do_subdominio/artisan schedule:run
+3. Configure a frequência do serviço cron. Lembre que no HighLeads está configurado para execução de 10/10 minutos
 
 ## HighLeads frontend
 
@@ -85,7 +100,7 @@ O frontend (ainda em desenvolvimento) utilizará o NUXT (Vue) como um SPA (Singl
 
 
 # Lumen PHP Framework
-
+[![Official Documentation](https://lumen.laravel.com/docs)
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
 [![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
@@ -93,20 +108,6 @@ O frontend (ainda em desenvolvimento) utilizará o NUXT (Vue) como um SPA (Singl
 
 Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
 
-## Official Documentation
-
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
-
-## Contributing
-
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
