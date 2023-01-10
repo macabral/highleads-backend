@@ -68,7 +68,7 @@ Para executar os testes do HighLeads-backend execute o comando "composer tests".
 
 Ainda em desenvolvimento.
 
-Para testar a API, se tiver problema de CORS o middleware CorsMiddleware faz a liberação para que a API possa ser acessad por diferentes clientes. Se quiser pode remover o arquivo CorsMiddleware.php (pasta Http\Middleware) e remova-o do bootstrap/app.php.  (fonte: https://dev.to/tadeubdev/php-curtas-resolvendo-cors-origins-no-lumen-23ih).
+Para testar a API, se tiver problema de CORS o middleware CorsMiddleware faz a liberação para que a API possa ser acessada por diferentes clientes. Se quiser pode remover o arquivo CorsMiddleware.php (pasta Http\Middleware) e remova-o do bootstrap/app.php.  (fonte: https://dev.to/tadeubdev/php-curtas-resolvendo-cors-origins-no-lumen-23ih).
 
 ### Tabelas
 
@@ -86,17 +86,17 @@ Para detalhes das tabelas veja na pasta \database\migrations.
 
 Ao Contato pode ser atribuído os seguintes status:
 
-[1] - Novo: quando o contato é inserido no banco de dados e nenhuma ação foi iniciada
-[2] - Em prospecção: quando uma ação de conversão em vendas foi iniciada
-[3] - Qualificado: quando o contato está em processo de venda efetiva
-[4] - Encerrado - Positivo: quando o contato converteu em venda
-[5] - Encerrado - Negativo: quando o contato não converteu em venda
+- [1] - Novo: quando o contato é inserido no banco de dados e nenhuma ação foi iniciada
+- [2] - Em prospecção: quando uma ação de conversão em vendas foi iniciad
+- [3] - Qualificado: quando o contato está em processo de venda efetiva
+- [4] - Encerrado - Positivo: quando o contato converteu em venda
+- [5] - Encerrado - Negativo: quando o contato não converteu em venda
 
 ### Perfil dos Usuários
 
 O Usuário pode ter o perfil:
-[1] - Usuário Administrador
-[2] - Consultor de Vendas
+- [1] - Usuário Administrador
+- [2] - Consultor de Vendas
 ### Instalando o HighLeads no servidor (shared host)
 
 1. Crie um arquivo compactado TAR do HighLeads da sua instalação local
