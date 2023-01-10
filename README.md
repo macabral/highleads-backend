@@ -95,7 +95,7 @@ Ao Contato pode ser atribuído os seguintes status:
 ### Score
 
 Um Score pode ser atribuído ao Contato para determinar o esforço a ser depreendido para a conversão em vendas.
-O Score é atrbuído com um valor de 0 a 10.
+O Score é atribuído com um valor de 0 a 10.
 ### Perfil dos Usuários
 
 O Usuário pode ter o perfil:
