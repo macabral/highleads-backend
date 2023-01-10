@@ -87,11 +87,15 @@ Para detalhes das tabelas veja na pasta \database\migrations.
 Ao Contato pode ser atribuído os seguintes status:
 
 - [1] - Novo: quando o contato é inserido no banco de dados e nenhuma ação foi iniciada
-- [2] - Em prospecção: quando uma ação de conversão em vendas foi iniciad
+- [2] - Em prospecção: quando uma ação de conversão em vendas foi iniciada
 - [3] - Qualificado: quando o contato está em processo de venda efetiva
 - [4] - Encerrado - Positivo: quando o contato converteu em venda
 - [5] - Encerrado - Negativo: quando o contato não converteu em venda
 
+### Score
+
+Um Score pode ser atribuído ao Contato para determinar o esforço a ser depreendido para a conversão em vendas.
+O Score é atrbuído com um valor de 0 a 10.
 ### Perfil dos Usuários
 
 O Usuário pode ter o perfil:
