@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Route;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class EmailsController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/emails/",
+     * path="/v1/emails/",
      * summary="Exibe os registros cadastrados",
      * description="Lista os registros cadastrados.",
      * tags={"Emails"},
@@ -28,7 +29,7 @@ class EmailsController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/emails/{id}",
+     * path="/v1/emails/{id}",
      * summary="Exibe um registro",
      * description="Exibe o registro por seu ID.",
      * tags={"Emails"},
@@ -60,7 +61,7 @@ class EmailsController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/emails-search?email={email}",
+     * path="/v1/emails-search?email={email}",
      * summary="Procurar registro",
      * description="Procurar registro",
      * tags={"Emails"},
@@ -99,7 +100,7 @@ class EmailsController extends Controller
 
     /**
      * @OA\POST(
-     * path="/api/emails",
+     * path="/v1/emails",
      * summary="Criar um novo registro",
      * description="Criar um novo registro",
      * tags={"Emails"},
@@ -107,14 +108,13 @@ class EmailsController extends Controller
      *    required=true,
      *    description="Dados do emails",
      *    @OA\JsonContent(
-     *       required={"para","cc","bcc","assunto","texto","erro","enviado","anexos"},
+     *       required={"para","cc","bcc","assunto","texto","prioridade","anexos"},
      *       @OA\Property(property="para", type="email", format="text", example="mercedes68@example.org"),
      *       @OA\Property(property="cc", type="email", format="text", example=""),* 
      *       @OA\Property(property="bcc", type="email", format="text", example=""),
      *       @OA\Property(property="assunto", type="string", format="text", example="Assunto"),
      *       @OA\Property(property="texto", type="string", format="text", example="Texto do email"),
-     *       @OA\Property(property="erro", type="integer", example="0"),
-     *       @OA\Property(property="enviado", type="integer", example="0")
+     *       @OA\Property(property="prioridade", type="integer", example="0"),
      *    ),
      * ),
      * @OA\Response(
@@ -142,112 +142,30 @@ class EmailsController extends Controller
             'cc' => 'max:255',
             'bcc' => 'max:255',
             'assunto' => 'required|max:80',
-            'texto' => 'required|max:80',
-            'erro' => 'max:1',
-            'enviado' => 'max:1'
+            'texto' => 'required|max:512',
+            'prioridade' => 'max:2'
         ]);
 
         try {
 
             $emails= Emails::create($request->all());
 
-            return response()->json(['created' => true], 201);
-
         } catch (\Exception $e) {
 
             return response()->json(['messagem' => $e], 404);
         }
-    }
 
-        /**
-     * @OA\PUT(
-     * path="/api/emails/{id}",
-     * summary="Alterar um registro",
-     * description="Alterar um registro por ID",
-     * tags={"Emails"},
-     * @OA\Parameter(
-     *    description="ID",
-     *    in="path",
-     *    name="id",
-     *    required=true,
-     *    example="1",
-     *    @OA\Schema(
-     *       type="integer",
-     *       format="int64"
-     *    )
-     * ),
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Dados do emails",
-     *    @OA\JsonContent(
-     *       required={"para","cc","bcc","assunto","texto","erro","enviado","anexos"},
-     *       @OA\Property(property="para", type="email", format="text", example="mercedes68@example.org"),
-     *       @OA\Property(property="cc", type="email", format="text", example=""),* 
-     *       @OA\Property(property="bcc", type="email", format="text", example=""),
-     *       @OA\Property(property="assunto", type="string", format="text", example="Assunto"),
-     *       @OA\Property(property="texto", type="string", format="text", example="Texto do email"),
-     *       @OA\Property(property="erro", type="integer", example="0"),
-     *       @OA\Property(property="enviado", type="integer", example="0")
-     *    ),
-     * ),
-     * @OA\Response(
-     *    response=201,
-     *    description="Salvo com sucesso.",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="updated", type="string", example="true")
-     *    ) 
-     * ),
-     * @OA\Response(
-     *    response=422,
-     *    description="Erro ao inserir."
-     *   ),
-     * @OA\Response(
-     *    response=404,
-     *    description="Nnão encontrado.",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="mensagem", type="string", example="Não encontrado")
-     *    )  
-     *   )
-     * )
-     */
-    public function update($id, Request $request)
-    {
+        if ($emails->prioridade === 0) {
 
-        try {
-
-            $emails = Emails::findOrFail($id);
-            
-        } catch (ModelNotFoundException $e) {
-
-            return response()->json([
-                'error' => [
-                    'messagem' => 'Não encontrado'
-                ]
-            ], 404);
+            $this->send();
         }
 
-        $input = $request->all();
-
-        try {
-
-            $emails->fill($input);
-        } catch (\Exception $e) {
-
-            return response()->json([
-                'error' => [
-                    'messagem' => $e
-                ]
-            ], 404);
-        }
-
-        $emails->save();
-
-        return response()->json($emails, 200);
+        return response()->json(['created' => true], 201);
     }
 
     /**
      * @OA\Delete(
-     * path="/api/emails/{id}",
+     * path="/v1/emails/{id}",
      * summary="Exclui um registro",
      * description="Exclui um registro por seu ID.",
      * tags={"Emails"},
@@ -290,7 +208,7 @@ class EmailsController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/emails-send",
+     * path="/v1/emails-send",
      * summary="Enviar emails",
      * description="Enviar emails.",
      * tags={"Emails"},

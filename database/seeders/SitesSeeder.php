@@ -17,13 +17,14 @@ class SitesSeeder extends Seeder
     {
         DB::table('sites')->insert([
             [
-                'pagina' => 'teste.com.br/consultoria',
-                'responsavel' => 'José da Silva',
-                'email'  => 'teste@teste.com',
+                'pagina' => 'minhapagina.com.br',
+                'responsavel' => 'Menu Nome',
+                'email'  => 'meuemail@dominio.com',
                 'telefone' => '21999999999', 
+                'ativo' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),       
-            ]
+            ],
         ]
 
         

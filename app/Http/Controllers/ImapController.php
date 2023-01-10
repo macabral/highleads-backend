@@ -78,7 +78,7 @@ class ImapController extends Controller
 
                         // ****** procura o responsável pela landing page
                         
-                        $ret = Sites::where('pagina', $url)->get();
+                        $ret = Sites::where('pagina',$url)->get();
 
                         if (count($ret) > 0) {
                             $ret = json_decode($ret[0]);
@@ -98,25 +98,28 @@ class ImapController extends Controller
                             try {
 
                                 $contatos = Contatos::create($input);
+
+                                if ($ret->mail !== '') {
                                 
-                                // ****** envia email para o responsável pela landing page
+                                    // ****** envia email para o responsável pela landing page
 
-                                $input = [
-                                    "para" => $ret->email,
-                                    "assunto" => "[$appSigla] Novo Contato",
-                                    "prioridade" => 0,
-                                    "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
-                                ];
+                                    $input = [
+                                        "para" => $ret->email,
+                                        "assunto" => "[$appSigla] Novo Contato",
+                                        "prioridade" => 0,
+                                        "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
+                                    ];
 
-                                try {
+                                    try {
 
-                                    Emails::create($input);
-                                    
-                                } catch (ModelNotFoundException $e) {
-                        
-                                    echo 'Erro ao inserir email.';
-                                    
-                                }                                
+                                        Emails::create($input);
+                                        
+                                    } catch (ModelNotFoundException $e) {
+                            
+                                        echo 'Erro ao inserir email.';
+                                        
+                                    }
+                                }                             
                 
                             } catch (ModelNotFoundException $e) {
                     

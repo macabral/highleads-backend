@@ -52,7 +52,27 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+
+        $usuarios = Usuarios::where('email', $request->email)->where('ativo', 1)->get();
+
+        if (count($usuarios) === 0) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $usu = $usuarios[0];
+
+        $ret = [
+            'id' => $usu['id'],
+            'nome' => $usu['nome'],
+            'email' => $usu['email'],
+            'perfil' => $usu['perfil'],
+            'token' => $token
+        ];
+
+        return $ret;
+
+        // return response()->json($ret, 200);
+
     }
 
     public function logout()

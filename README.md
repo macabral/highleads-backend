@@ -1,13 +1,13 @@
 # HighLeads - Gerenciamento de Leads
 
-Você precisa captar leads por uma campanha de mídias digitais que levem seu interessado para uma página na web (landing page) que contém um formulário
+Você precisa captar leads por uma campanha de mídias digitais que levem o interessado para uma página na web (landing page) que contém um formulário
 para que o interessado informe seus dados de contato (nome, email e telefone).
 
 Geralmente as landing pages são construídas em Word Press e você utiliza um formulário que encaminha os dados do interessado para uma conta de email.
 
 Gerenciar os leads em uma conta de email é muito trabalhoso. Assim, o HighLeads automatiza o processo de captação de leads. Ele lê a conta de email (IMAP), armazena as informações dos leads em um banco de dados e gerencia essas informações para a prospecção de futuros clientes.
 
-Você pode ter várias landing pages apontando para a mesma conta de email.
+Você pode ter várias landing pages apontando para a mesma conta de email.  O HighLeads envia um aviso de 'Novo Contato' para as contas de email que você indicar para cada landing page.
 
 O Highleds possui um serviço backend para o serviço de API e o frontend - interface para o gerenciamento dos leads.  Esses serviços podem ser executados no mesmo servidor que você publica as suas landing pages.
 
@@ -68,6 +68,8 @@ Para executar os testes do HighLeads-backend execute o comando "composer tests".
 
 Ainda em desenvolvimento.
 
+Para testar a API, se tiver problema de CORS o middleware CorsMiddleware faz a liberação para que a API possa ser acessad por diferentes clientes. Se quiser pode remover o arquivo CorsMiddleware.php (pasta Http\Middleware) e remova-o do bootstrap/app.php.  (fonte: https://dev.to/tadeubdev/php-curtas-resolvendo-cors-origins-no-lumen-23ih).
+
 ### Tabelas
 
 - contatos    : armazena os dados dos formulários das landing pages
@@ -75,13 +77,30 @@ Ainda em desenvolvimento.
 - sites       : lista as páginas (landing pages) associadas aos seus responsáveis
 - blacklist   : lista dos emails cadastrados para não serem incluídos como contatos
 - emails      : lista os emails a serem enviados pela plataforma HighLeads
+- codigos     : armazena os códigos de recuperação de senha (enviador por email para o usuário)
+- notes       : armazena as anotações do acompanhamento do contato
 
 Para detalhes das tabelas veja na pasta \database\migrations.
 
+### Status do Contato
+
+Ao Contato pode ser atribuído os seguintes status:
+
+[1] - Novo: quando o contato é inserido no banco de dados e nenhuma ação foi iniciada
+[2] - Em prospecção: quando uma ação de conversão em vendas foi iniciada
+[3] - Qualificado: quando o contato está em processo de venda efetiva
+[4] - Encerrado - Positivo: quando o contato converteu em venda
+[5] - Encerrado - Negativo: quando o contato não converteu em venda
+
+### Perfil dos Usuários
+
+O Usuário pode ter o perfil:
+[1] - Usuário Administrador
+[2] - Consultor de Vendas
 ### Instalando o HighLeads no servidor (shared host)
 
 1. Crie um arquivo compactado TAR do HighLeads da sua instalação local
-2. Crie um subdominio em seu shared host. Utilize o nome api-highleads (por exemplo: https://api-highleads.dominio.com.br)
+2. Crie um subdominio no shared host. Utilize o nome api-highleads (por exemplo: https://api-highleads.dominio.com.br)
 2. Copie o arquivo compactado para a pasta do subdominio no shared host
 3. Acesse o servidor pelo SSH e vá para a pasta do subdominio
 4. Descompacte o arquivo com o comando tar -xvf <nome_do_arquivo_compactado.tar>
@@ -98,6 +117,7 @@ Para detalhes das tabelas veja na pasta \database\migrations.
 
 O frontend (ainda em desenvolvimento) utilizará o NUXT (Vue) como um SPA (Single Page Application) que também será disponibilizado no mesmo servidor "shared host".
 
+Veja em https://github.com/macabral/highleads-frontend
 
 # Lumen PHP Framework
 

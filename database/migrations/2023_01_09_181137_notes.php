@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sites', function (Blueprint $table) {
+        Schema::create('notes', function (Blueprint $table) {
 
             $table->integer('id', true)->unsigned();
-            $table->string('pagina', 80)->unique();
-            $table->string('responsavel', 80);
-            $table->string('email', 80);
-            $table->string('telefone', 15);
-            $table->tinyInteger('ativo')->default(1);
+            $table->text('texto');
+            $table->integer('contatos_fk')->unsigned();
+            $table->integer('usuarios_fk')->unsigned();
             $table->timestamps();
-        
+
+            $table->foreign('contatos_fk')->references('id')->on('contatos')->onDelete('cascade');
+            $table->foreign('usuarios_fk')->references('id')->on('usuarios');
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sites');
+        Schema::dropIfExists('notes');
     }
 };

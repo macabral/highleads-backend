@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\ValidationException;
 use App\Models\Blacklistas;
 
 
@@ -13,10 +12,9 @@ class BlacklistasController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/blacklist/",
+     * path="/v1/blacklist/",
      * summary="Exibe os itens da lista negra",
      * description="Exibe os itens da lista negra.",
-     * operationId="blacklistIndex",
      * tags={"Blacklist"},
      * @OA\Response(response="200", description="Blacklist."),
      * )
@@ -28,10 +26,9 @@ class BlacklistasController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/blacklist/{id}",
+     * path="/v1/blacklist/{id}",
      * summary="Exibe um registro da blacklist",
      * description="Exibe um registro da blacklist por seu ID.",
-     * operationId="blacklistShow",
      * tags={"Blacklist"},
      * @OA\Response(response="200", description="Retorna dados da blacklist."),
      * @OA\Response(response="404", description="Item não encontrado."),
@@ -68,10 +65,9 @@ class BlacklistasController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/blacklist-search?email{email}",
+     * path="/v1/blacklist-search?email{email}",
      * summary="Procurar o item da blacklist por email",
      * description="Procurar o item da blacklist por email",
-     * operationId="blacklistSearch",
      * tags={"Blacklist"},
      * @OA\Response(response="200", description="Retorna dados da blacklist."),
      * @OA\Parameter(
@@ -113,7 +109,7 @@ class BlacklistasController extends Controller
 
         /**
      * @OA\POST(
-     * path="/api/blacklist",
+     * path="/v1/blacklist",
      * summary="Criar uma nova entrada na blacklist",
      * description="Criar uma nova entrada na blacklist",
      * tags={"Blacklist"},
@@ -155,7 +151,7 @@ class BlacklistasController extends Controller
 
         /**
      * @OA\PUT(
-     * path="/api/blacklist/{id}",
+     * path="/v1/blacklist/{id}",
      * summary="Alterar um registro da blacklist",
      * description="Alterar um registro da blacklist",
      * tags={"Blacklist"},
@@ -231,7 +227,7 @@ class BlacklistasController extends Controller
 
     /**
      * @OA\Delete(
-     * path="/api/blacklist/{id}",
+     * path="/v1/blacklist/{id}",
      * summary="Exclui uma entrada da blacklist",
      * description="Exclui a entrada na blacklist por seu ID.",
      * tags={"Blacklist"},

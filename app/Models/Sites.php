@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sites extends Model
 {
-    protected $fillable = ['pagina','responsavel','email','telefone'];
+    protected $fillable = ['pagina','responsavel','email','telefone','ativo'];
 }

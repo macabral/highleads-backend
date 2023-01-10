@@ -13,7 +13,7 @@ class SitesController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/sites/",
+     * path="/v1/sites/",
      * summary="Exibe os registros cadastrados",
      * description="Lista os registros cadastrados.",
      * tags={"Sites"},
@@ -22,12 +22,14 @@ class SitesController extends Controller
      */
     public function index()
     {
-        return Sites::all();
+
+        return Sites::paginate(perPage: 50);
+
     }
 
     /**
      * @OA\Get(
-     * path="/api/sites/{id}",
+     * path="/v1/sites/{id}",
      * summary="Exibe um registro",
      * description="Exibe o registro por seu ID.",
      * tags={"Sites"},
@@ -61,7 +63,7 @@ class SitesController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/sites-search?site={site}",
+     * path="/v1/sites-search?site={site}",
      * summary="Procurar registro por site",
      * description="Procurar registro por site",
      * tags={"Sites"},
@@ -89,7 +91,7 @@ class SitesController extends Controller
       
         try {
 
-            $query = DB::table('sites')->where('pagina', $search)->get();
+            $query = Sites::where('pagina', 'like',  "%$search%")->get();
 
         } catch (\Exception $e) {
 
@@ -103,7 +105,7 @@ class SitesController extends Controller
     
     /**
      * @OA\POST(
-     * path="/api/sites",
+     * path="/v1/sites",
      * summary="Criar um novo registro",
      * description="Criar um novo registro",
      * tags={"Sites"},
@@ -141,7 +143,8 @@ class SitesController extends Controller
             'pagina' => 'required|max:80',
             'email' => 'required|max:80',
             'telefone' => 'required|max:15',
-            'nome' => 'max:80'
+            'nome' => 'max:80',
+            'ativo' => 'required|max:1'
         ]);
 
         try {
@@ -159,7 +162,7 @@ class SitesController extends Controller
 
     /**
      * @OA\PUT(
-     * path="/api/sites/{id}",
+     * path="/v1/sites/{id}",
      * summary="Alterar um registro",
      * description="Alterar um registro por ID",
      * tags={"Sites"},
@@ -212,7 +215,8 @@ class SitesController extends Controller
             'pagina' => 'max:255',
             'responsavel' => 'max:80',
             'email' => 'max:80',
-            'telefone' => 'max:15'
+            'telefone' => 'max:15',
+            'ativo' => 'max:1'
         ]);
 
         try {
@@ -245,7 +249,7 @@ class SitesController extends Controller
 
     /**
      * @OA\Delete(
-     * path="/api/sites/{id}",
+     * path="/v1/sites/{id}",
      * summary="Exclui um registro",
      * description="Exclui um registro por seu ID.",
      * tags={"Sites"},

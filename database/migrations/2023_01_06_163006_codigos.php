@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sites', function (Blueprint $table) {
-
-            $table->integer('id', true)->unsigned();
-            $table->string('pagina', 80)->unique();
-            $table->string('responsavel', 80);
-            $table->string('email', 80);
-            $table->string('telefone', 15);
-            $table->tinyInteger('ativo')->default(1);
+        Schema::create('codigos', function (Blueprint $table) {
+            $table->id()->unsigned();
+            $table->string('codigo');
+            $table->integer('usuarios_fk')->unsigned()->nullable();
             $table->timestamps();
-        
+
+            $table->index('codigo');
+            $table->foreign('usuarios_fk')->references('id')->on('usuarios')->onDelete('cascade');
         });
     }
 
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sites');
+        Schema::dropIfExists('codigos');
     }
 };

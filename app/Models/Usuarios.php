@@ -14,12 +14,12 @@ class Usuarios extends Model implements AuthenticatableContract, AuthorizableCon
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'nome', 'email',
+        'nome', 'email', 'password','ativo','perfil','usuarios_fk'
     ];
 
-    protected $hidden = [
-        'password',
-    ];
+    // protected $hidden = [
+    //     'password',
+    // ];
 
     public function getJWTIdentifier()
     {
@@ -30,4 +30,10 @@ class Usuarios extends Model implements AuthenticatableContract, AuthorizableCon
     {
         return [];
     }
+
+    public function notes()
+    {
+        return $this->hasMany(Notes::class);
+    }
+
 }

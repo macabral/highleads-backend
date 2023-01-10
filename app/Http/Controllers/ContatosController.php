@@ -11,25 +11,46 @@ class ContatosController extends Controller
 {
     /**
      * @OA\Get(
-     * path="/api/contatos/",
-     * summary="Exibe os Contatos cadastrados",
-     * description="Lista os contatos cadastrados.",
-     * operationId="contato1",
+     * path="/v1/contatos-satus/",
+     * summary="Exibe os Contatos cadastrados filtrado por status",
+     * description="Lista os contatos cadastrados filtrados por status",
      * tags={"Contato"},
-     * @OA\Response(response="200", description="Lista do contatos."),
+     * @OA\Response(response="200", description="Retorna dados."),
+     * @OA\Response(response="404", description="Item não encontrado."), 
+     * @OA\Parameter(
+     *    description="status",
+     *    in="path",
+     *    name="status",
+     *    required=true,
+     *    example="1",
+     *    @OA\Schema(
+     *       type="integer",
+     *       format="int64"
+     *    )
+     * )
      * )
      */
-    public function index()
+    public function index($status)
     {
-        return Contatos::all();
+
+        try {
+
+            $query = Contatos::where('status', '=', $status)->orderBy('score','desc')->get();
+        
+        } catch (\Exception $e) {
+
+            return response()->json(['messagem' => $e], 404);
+            
+        }
+
+        return response()->json($query);
     }
 
     /**
      * @OA\Get(
-     * path="/api/contatos/{id}",
+     * path="/v1/contatos/{id}",
      * summary="Exibe um contato",
      * description="Exibe o contato por seu ID.",
-     * operationId="contato2",
      * tags={"Contato"},
      * @OA\Response(response="200", description="Retorna dados do contato."),
      * @OA\Response(response="404", description="Contato não encontrado."),
@@ -66,10 +87,9 @@ class ContatosController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/contatos-search?email={email}",
+     * path="/v1/contatos-search?email={email}",
      * summary="Procurar contatos por email",
      * description="Procurar contatos por email",
-     * operationId="contato3",
      * tags={"Contato"},
      * @OA\Response(response="200", description="Retorna dados do Contato."),
      * @OA\Parameter(
@@ -89,14 +109,14 @@ class ContatosController extends Controller
 
 
         $this->validate($request, [
-            'email' => 'required|max:80',
+            'search' => 'required|max:80',
         ]);
 
-        $search = $request->get('email');
+        $search = $request->get('search');
                
         try {
 
-            $query = Contatos::where('email', $search)->get();
+            $query = Contatos::where('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orderBy('datahora', 'DESC')->get();
 
         } catch (\Exception $e) {
 
@@ -110,10 +130,9 @@ class ContatosController extends Controller
 
     /**
      * @OA\POST(
-     * path="/api/contatos",
+     * path="/v1/contatos",
      * summary="Criar um Contato",
      * description="Criar um novo Contato",
-     * operationId="contato4",
      * tags={"Contato"},
      * @OA\RequestBody(
      *    required=true,
@@ -170,10 +189,9 @@ class ContatosController extends Controller
 
     /**
      * @OA\PUT(
-     * path="/api/contatos/{id}",
+     * path="/v1/contatos/{id}",
      * summary="Alterar um Contato",
      * description="Alterar um contato por ID",
-     * operationId="contato5",
      * tags={"Contato"},
      * @OA\Parameter(
      *    description="ID do contato",
@@ -227,7 +245,7 @@ class ContatosController extends Controller
             'nome' => 'max:80',
             'email' => 'max:80',
             'datahora' => 'max:19',
-            'telefone' => 'max:15'
+            'telefone' => 'max:15',
         ]);
 
         try {
@@ -260,10 +278,9 @@ class ContatosController extends Controller
 
     /**
      * @OA\Delete(
-     * path="/api/contatos/{id}",
+     * path="/v1/contatos/{id}",
      * summary="Exclui um contato",
      * description="Exclui o contato por seu ID.",
-     * operationId="contato6",
      * tags={"Contato"},
      * @OA\Response(response="201", description="Contato excluído com sucesso.",
      *    @OA\JsonContent(

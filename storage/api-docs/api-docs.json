@@ -10,14 +10,14 @@
         "version": "1.0"
     },
     "paths": {
-        "/api/blacklist/": {
+        "/v1/blacklist/": {
             "get": {
                 "tags": [
                     "Blacklist"
                 ],
                 "summary": "Exibe os itens da lista negra",
                 "description": "Exibe os itens da lista negra.",
-                "operationId": "blacklistIndex",
+                "operationId": "670ff32423962583b69e54c975761d51",
                 "responses": {
                     "200": {
                         "description": "Blacklist."
@@ -25,14 +25,14 @@
                 }
             }
         },
-        "/api/blacklist/{id}": {
+        "/v1/blacklist/{id}": {
             "get": {
                 "tags": [
                     "Blacklist"
                 ],
                 "summary": "Exibe um registro da blacklist",
                 "description": "Exibe um registro da blacklist por seu ID.",
-                "operationId": "blacklistShow",
+                "operationId": "d5ab44f3d139eafb76d2612de7c4835f",
                 "parameters": [
                     {
                         "name": "id",
@@ -61,7 +61,7 @@
                 ],
                 "summary": "Alterar um registro da blacklist",
                 "description": "Alterar um registro da blacklist",
-                "operationId": "4862199cea00cbac04f3bfd06e06095d",
+                "operationId": "21a49eb0f37fb96f7dfd8a27a06cacaa",
                 "parameters": [
                     {
                         "name": "id",
@@ -140,7 +140,7 @@
                 ],
                 "summary": "Exclui uma entrada da blacklist",
                 "description": "Exclui a entrada na blacklist por seu ID.",
-                "operationId": "fa502d401e9c86df163395b0d1f9630e",
+                "operationId": "4f9fc23f5a723b73c3b110631aa90485",
                 "parameters": [
                     {
                         "name": "id",
@@ -190,14 +190,14 @@
                 }
             }
         },
-        "/api/blacklist-search?email{email}": {
+        "/v1/blacklist-search?email{email}": {
             "get": {
                 "tags": [
                     "Blacklist"
                 ],
                 "summary": "Procurar o item da blacklist por email",
                 "description": "Procurar o item da blacklist por email",
-                "operationId": "blacklistSearch",
+                "operationId": "47a0c1d58f6d29a78d2799251be358c4",
                 "parameters": [
                     {
                         "name": "email",
@@ -217,14 +217,14 @@
                 }
             }
         },
-        "/api/blacklist": {
+        "/v1/blacklist": {
             "post": {
                 "tags": [
                     "Blacklist"
                 ],
                 "summary": "Criar uma nova entrada na blacklist",
                 "description": "Criar uma nova entrada na blacklist",
-                "operationId": "3eed95d8fdd0ffc2895b7ad62ebb379d",
+                "operationId": "ea418b301e3ad450fc0f7b1996c938e7",
                 "requestBody": {
                     "description": "Dados da blacklista",
                     "required": true,
@@ -269,29 +269,45 @@
                 }
             }
         },
-        "/api/contatos/": {
+        "/v1/contatos-satus/": {
             "get": {
                 "tags": [
                     "Contato"
                 ],
-                "summary": "Exibe os Contatos cadastrados",
-                "description": "Lista os contatos cadastrados.",
-                "operationId": "contato1",
+                "summary": "Exibe os Contatos cadastrados filtrado por status",
+                "description": "Lista os contatos cadastrados filtrados por status",
+                "operationId": "a359bdeca55da6de4078da7414c14203",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "path",
+                        "description": "status",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Lista do contatos."
+                        "description": "Retorna dados."
+                    },
+                    "404": {
+                        "description": "Item não encontrado."
                     }
                 }
             }
         },
-        "/api/contatos/{id}": {
+        "/v1/contatos/{id}": {
             "get": {
                 "tags": [
                     "Contato"
                 ],
                 "summary": "Exibe um contato",
                 "description": "Exibe o contato por seu ID.",
-                "operationId": "contato2",
+                "operationId": "55c4e1670588f2f3392f115c33881a7e",
                 "parameters": [
                     {
                         "name": "id",
@@ -320,7 +336,7 @@
                 ],
                 "summary": "Alterar um Contato",
                 "description": "Alterar um contato por ID",
-                "operationId": "contato5",
+                "operationId": "f23f02ea4f9af93a64c3172c6cdeece1",
                 "parameters": [
                     {
                         "name": "id",
@@ -428,7 +444,7 @@
                 ],
                 "summary": "Exclui um contato",
                 "description": "Exclui o contato por seu ID.",
-                "operationId": "contato6",
+                "operationId": "c299dcf95b8a240db8c6ed22848737f4",
                 "parameters": [
                     {
                         "name": "id",
@@ -444,7 +460,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "Contato excluído com suceso.",
+                        "description": "Contato excluído com sucesso.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -478,14 +494,14 @@
                 }
             }
         },
-        "/api/contatos-search?email={email}": {
+        "/v1/contatos-search?email={email}": {
             "get": {
                 "tags": [
                     "Contato"
                 ],
                 "summary": "Procurar contatos por email",
                 "description": "Procurar contatos por email",
-                "operationId": "contato3",
+                "operationId": "d2529962299af945a1b48e3d81bdb90a",
                 "parameters": [
                     {
                         "name": "email",
@@ -505,14 +521,14 @@
                 }
             }
         },
-        "/api/contatos": {
+        "/v1/contatos": {
             "post": {
                 "tags": [
                     "Contato"
                 ],
                 "summary": "Criar um Contato",
                 "description": "Criar um novo Contato",
-                "operationId": "contato4",
+                "operationId": "22caebf5fbc9694c0164b2430ba81e1f",
                 "requestBody": {
                     "description": "Dados do Contato",
                     "required": true,
@@ -586,14 +602,14 @@
                 }
             }
         },
-        "/api/emails/": {
+        "/v1/emails/": {
             "get": {
                 "tags": [
                     "Emails"
                 ],
                 "summary": "Exibe os registros cadastrados",
                 "description": "Lista os registros cadastrados.",
-                "operationId": "e4818c40c1a4f3e3e0c8a71cf62a04e0",
+                "operationId": "2c18ee019293cbf6fb73fee073d6c015",
                 "responses": {
                     "200": {
                         "description": "Lista dos emails"
@@ -601,14 +617,14 @@
                 }
             }
         },
-        "/api/emails/{id}": {
+        "/v1/emails/{id}": {
             "get": {
                 "tags": [
                     "Emails"
                 ],
                 "summary": "Exibe um registro",
                 "description": "Exibe o registro por seu ID.",
-                "operationId": "827ae14105fbe67ebe448274cf6c970d",
+                "operationId": "bfcfa99e03cc7ef92015d6de6c75be4d",
                 "parameters": [
                     {
                         "name": "id",
@@ -631,127 +647,13 @@
                     }
                 }
             },
-            "put": {
-                "tags": [
-                    "Emails"
-                ],
-                "summary": "Alterar um registro",
-                "description": "Alterar um registro por ID",
-                "operationId": "41723aaba5e9003fe4e73ad4cec74789",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        },
-                        "example": "1"
-                    }
-                ],
-                "requestBody": {
-                    "description": "Dados do emails",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "para",
-                                    "cc",
-                                    "bcc",
-                                    "assunto",
-                                    "texto",
-                                    "erro",
-                                    "enviado",
-                                    "anexos"
-                                ],
-                                "properties": {
-                                    "para": {
-                                        "type": "email",
-                                        "format": "text",
-                                        "example": "mercedes68@example.org"
-                                    },
-                                    "cc": {
-                                        "type": "email",
-                                        "format": "text",
-                                        "example": ""
-                                    },
-                                    "bcc": {
-                                        "type": "email",
-                                        "format": "text",
-                                        "example": ""
-                                    },
-                                    "assunto": {
-                                        "type": "string",
-                                        "format": "text",
-                                        "example": "Assunto"
-                                    },
-                                    "texto": {
-                                        "type": "string",
-                                        "format": "text",
-                                        "example": "Texto do email"
-                                    },
-                                    "erro": {
-                                        "type": "integer",
-                                        "example": "0"
-                                    },
-                                    "enviado": {
-                                        "type": "integer",
-                                        "example": "0"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Salvo com sucesso.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "updated": {
-                                            "type": "string",
-                                            "example": "true"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Erro ao inserir."
-                    },
-                    "404": {
-                        "description": "Nnão encontrado.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "mensagem": {
-                                            "type": "string",
-                                            "example": "Não encontrado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "delete": {
                 "tags": [
                     "Emails"
                 ],
                 "summary": "Exclui um registro",
                 "description": "Exclui um registro por seu ID.",
-                "operationId": "7227766486455a05f935cea5eb2dd617",
+                "operationId": "1a0a7600d3b5deb5fc930df4a40dd8c7",
                 "parameters": [
                     {
                         "name": "id",
@@ -801,14 +703,14 @@
                 }
             }
         },
-        "/api/emails-search?email={email}": {
+        "/v1/emails-search?email={email}": {
             "get": {
                 "tags": [
                     "Emails"
                 ],
                 "summary": "Procurar registro",
                 "description": "Procurar registro",
-                "operationId": "95ea63a6b5bc48dbef462ec7273de953",
+                "operationId": "e3aef070b89f586e6fcac466e8df2898",
                 "parameters": [
                     {
                         "name": "email",
@@ -828,14 +730,14 @@
                 }
             }
         },
-        "/api/emails": {
+        "/v1/emails": {
             "post": {
                 "tags": [
                     "Emails"
                 ],
                 "summary": "Criar um novo registro",
                 "description": "Criar um novo registro",
-                "operationId": "bf96a1fb30b7c1b599c4bea957dde7c4",
+                "operationId": "6771ada71f10812984a2510b1bcfd560",
                 "requestBody": {
                     "description": "Dados do emails",
                     "required": true,
@@ -848,8 +750,7 @@
                                     "bcc",
                                     "assunto",
                                     "texto",
-                                    "erro",
-                                    "enviado",
+                                    "prioridade",
                                     "anexos"
                                 ],
                                 "properties": {
@@ -878,11 +779,7 @@
                                         "format": "text",
                                         "example": "Texto do email"
                                     },
-                                    "erro": {
-                                        "type": "integer",
-                                        "example": "0"
-                                    },
-                                    "enviado": {
+                                    "prioridade": {
                                         "type": "integer",
                                         "example": "0"
                                     }
@@ -918,14 +815,14 @@
                 }
             }
         },
-        "/api/emails-send": {
+        "/v1/emails-send": {
             "get": {
                 "tags": [
                     "Emails"
                 ],
                 "summary": "Enviar emails",
                 "description": "Enviar emails.",
-                "operationId": "a299c1b3e43751826312850d39f2085b",
+                "operationId": "539e454927e369b31c82ee0b0a785329",
                 "responses": {
                     "200": {
                         "description": "Emails enviados"
@@ -933,14 +830,169 @@
                 }
             }
         },
-        "/api/sites/": {
+        "/v1/notes/{contato}": {
+            "get": {
+                "tags": [
+                    "Notes"
+                ],
+                "summary": "Retorna as notas inseridas para um Contato",
+                "description": "Retorna as notas inseridas para um Contato",
+                "operationId": "18dd74f16ff2d1670ccbd9532b123716",
+                "parameters": [
+                    {
+                        "name": "contato",
+                        "in": "path",
+                        "description": "contato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna dados."
+                    },
+                    "404": {
+                        "description": "Item não encontrado."
+                    }
+                }
+            }
+        },
+        "/v1/notes": {
+            "post": {
+                "tags": [
+                    "Notes"
+                ],
+                "summary": "Criar um novo registro",
+                "description": "Criar um novo registro de Notas",
+                "operationId": "eee9f395e1de7e73f46daec89c233afb",
+                "requestBody": {
+                    "description": "Dados da Nota",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "contatos_fk",
+                                    "usuarios_fk",
+                                    "notas"
+                                ],
+                                "properties": {
+                                    "contatos_fk": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "usuarios_fk": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "notas": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "orgi urbi sanctum distro"
+                                    },
+                                    "telefone": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "2199999999"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Nota salva com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "created": {
+                                            "type": "string",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro ao inserir."
+                    }
+                }
+            }
+        },
+        "/v1/notes/{id}": {
+            "delete": {
+                "tags": [
+                    "Notes"
+                ],
+                "summary": "Exclui uma nota",
+                "description": "Exclui uma nota por seu ID.",
+                "operationId": "50d791ddf97a8701c20ab1b3e3ed9b67",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Nota excluída com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "excluído": {
+                                            "type": "string",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nota não encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "mensagem": {
+                                            "type": "string",
+                                            "example": "Não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/sites/": {
             "get": {
                 "tags": [
                     "Sites"
                 ],
                 "summary": "Exibe os registros cadastrados",
                 "description": "Lista os registros cadastrados.",
-                "operationId": "eaf678e0b3d0a7eefdaaee5b6a28cb86",
+                "operationId": "be31a5ad0a53c175468ccd41a12466d8",
                 "responses": {
                     "200": {
                         "description": "Lista dos sites"
@@ -948,14 +1000,14 @@
                 }
             }
         },
-        "/api/sites/{id}": {
+        "/v1/sites/{id}": {
             "get": {
                 "tags": [
                     "Sites"
                 ],
                 "summary": "Exibe um registro",
                 "description": "Exibe o registro por seu ID.",
-                "operationId": "7386edf4dda2d6c91b6c118f0b4e178e",
+                "operationId": "fa0a09565ea4ba18810a9926e6048954",
                 "parameters": [
                     {
                         "name": "id",
@@ -984,7 +1036,7 @@
                 ],
                 "summary": "Alterar um registro",
                 "description": "Alterar um registro por ID",
-                "operationId": "b47e041a512e88711489ee4d3ac5ffcc",
+                "operationId": "043ee510c146a811d4bf067a4863df92",
                 "parameters": [
                     {
                         "name": "id",
@@ -1081,7 +1133,7 @@
                 ],
                 "summary": "Exclui um registro",
                 "description": "Exclui um registro por seu ID.",
-                "operationId": "b4dd3e64e936495544c72b4236d6496a",
+                "operationId": "262514130dd76da42ba2fda0d8bb5731",
                 "parameters": [
                     {
                         "name": "id",
@@ -1131,14 +1183,14 @@
                 }
             }
         },
-        "/api/sites-search?site={site}": {
+        "/v1/sites-search?site={site}": {
             "get": {
                 "tags": [
                     "Sites"
                 ],
                 "summary": "Procurar registro por site",
                 "description": "Procurar registro por site",
-                "operationId": "9180fbe30886c0d147049167c2ec2b88",
+                "operationId": "f438afacb72e0746ce52c7139dbe9623",
                 "parameters": [
                     {
                         "name": "site",
@@ -1158,14 +1210,14 @@
                 }
             }
         },
-        "/api/sites": {
+        "/v1/sites": {
             "post": {
                 "tags": [
                     "Sites"
                 ],
                 "summary": "Criar um novo registro",
                 "description": "Criar um novo registro",
-                "operationId": "80b29d2b4795585069939e280877de49",
+                "operationId": "991eabe2805feb9035ba4695c18f45c7",
                 "requestBody": {
                     "description": "Dados do Site",
                     "required": true,
@@ -1231,17 +1283,241 @@
                 }
             }
         },
-        "/api/usuarios/": {
+        "/v1/usuarios/": {
             "get": {
                 "tags": [
                     "Usuários"
                 ],
                 "summary": "Exibe os usuarios cadastrados",
                 "description": "Exibe os usuarios cadastrados.",
-                "operationId": "8c5755b4919645cc9afb91320bd9a3e4",
+                "operationId": "428255da959eb4673870e687821dd550",
                 "responses": {
                     "200": {
                         "description": "Usuários."
+                    }
+                }
+            }
+        },
+        "/v1/usuarios-search?nome={nome}": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Procurar registro",
+                "description": "Procurar registro",
+                "operationId": "34db7e889f2585290a9864ba59632381",
+                "parameters": [
+                    {
+                        "name": "site",
+                        "in": "query",
+                        "description": "site",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "João da Silva"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna dados."
+                    }
+                }
+            }
+        },
+        "/v1/usuarios/{id}": {
+            "put": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Alterar um registro",
+                "description": "Alterar um registro por ID",
+                "operationId": "f429f3e0b0128488cae87b8966cffadd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dados do registro",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "José da Silva"
+                                    },
+                                    "email": {
+                                        "type": "email",
+                                        "format": "text",
+                                        "example": "mercedes68@example.org"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Salvo com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "updated": {
+                                            "type": "string",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro ao inserir."
+                    },
+                    "404": {
+                        "description": "Nnão encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "mensagem": {
+                                            "type": "string",
+                                            "example": "Não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/envia-codigo?email={email}": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Envia código de confirmação",
+                "description": "Envia o código de confirmação para o email informado",
+                "operationId": "2dfc577d0cb41c70704facff0955617e",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "teste@dominio.com"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Confirma que o código foi encaminhado."
+                    },
+                    "404": {
+                        "description": "Email não encontrado."
+                    }
+                }
+            }
+        },
+        "/v1/altera-senha": {
+            "put": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Altera senha do usuário",
+                "description": "Alterar a senha do usuário cadastrado",
+                "operationId": "545e0b1f8d409f396845d4f9a292e179",
+                "requestBody": {
+                    "description": "Dados do Usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "codigo",
+                                    "senha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "text",
+                                        "example": "mercedes68@example.org"
+                                    },
+                                    "codigo": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "JAVA"
+                                    },
+                                    "senha": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "******"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Senha Alterada com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "updated": {
+                                            "type": "string",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro ao alterar a senha."
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "mensagem": {
+                                            "type": "string",
+                                            "example": "Não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
