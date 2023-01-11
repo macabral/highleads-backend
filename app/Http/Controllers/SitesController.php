@@ -13,6 +13,22 @@ class SitesController extends Controller
 
     /**
      * @OA\Get(
+     * path="/v1/sites-all/",
+     * summary="Retorna todos registros cadastrados",
+     * description="Retorna os registros cadastrados.",
+     * tags={"Sites"},
+     * @OA\Response(response="200", description="Lista dos sites"),
+     * )
+     */
+    public function all()
+    {
+
+        return Sites::all();
+
+    }
+
+    /**
+     * @OA\Get(
      * path="/v1/sites/",
      * summary="Exibe os registros cadastrados",
      * description="Lista os registros cadastrados.",
@@ -23,7 +39,7 @@ class SitesController extends Controller
     public function index()
     {
 
-        return Sites::paginate(perPage: 50);
+        return Sites::paginate(perPage: 15);
 
     }
 
@@ -142,9 +158,9 @@ class SitesController extends Controller
         $this->validate($request, [
             'pagina' => 'required|max:80',
             'email' => 'required|max:80',
-            'telefone' => 'required|max:15',
+            'telefone' => 'max:1024',
             'nome' => 'max:80',
-            'ativo' => 'required|max:1'
+            'ativo' => 'max:1'
         ]);
 
         try {
@@ -214,7 +230,7 @@ class SitesController extends Controller
         $this->validate($request, [
             'pagina' => 'max:255',
             'responsavel' => 'max:80',
-            'email' => 'max:80',
+            'email' => 'max:1024',
             'telefone' => 'max:15',
             'ativo' => 'max:1'
         ]);

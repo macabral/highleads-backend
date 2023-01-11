@@ -17,9 +17,9 @@ return new class extends Migration
 
             $table->integer('id', true)->unsigned();
             $table->string('pagina', 80)->unique();
-            $table->string('responsavel', 80);
-            $table->string('email', 80);
-            $table->string('telefone', 15);
+            $table->string('responsavel', 80)->nullable();;
+            $table->text('email');
+            $table->string('telefone', 15)->nullable();;
             $table->tinyInteger('ativo')->default(1);
             $table->timestamps();
         

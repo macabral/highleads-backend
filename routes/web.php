@@ -7,19 +7,24 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
 
     $router->get('/estat', ['uses' => 'EstatController@index','as' => 'estat']);
 
-    $router->get('/sites', ['uses' => 'SitesController@index','as' => 'sites']);
-    $router->get('/sites/{id}', ['uses' => 'SitesController@show','as' => 'find_sites']);
-    $router->get('/sites-search', ['uses' => 'SitesController@search','as' => 'search_sites']);
-    $router->post('/sites', ['uses' => 'SitesController@store','as' => 'new_site']);
-    $router->put('/sites/{id}', ['uses' => 'SitesController@update','as' => 'update_site']);
-    $router->delete('/sites/{id}', ['uses' => 'SitesController@destroy','as' => 'delete_site']);
-
     $router->get('/contatos-status/{status}', ['uses' => 'ContatosController@index','as' => 'contatos']);
     $router->get('/contatos/{id}', ['uses' => 'ContatosController@show','as' => 'find_contatos']);
     $router->get('/contatos-search', ['uses' => 'ContatosController@search','as' => 'search_contatos']);
     $router->post('/contatos', ['uses' => 'ContatosController@store','as' => 'new_contatos']);
     $router->put('/contatos/{id}', ['uses' => 'ContatosController@update','as' => 'update_contatos']);
     $router->delete('/contatos/{id}', ['uses' => 'ContatosController@destroy','as' => 'delete_contatos']);
+
+    $router->get('/notes/{contato}', ['uses' => 'NotesController@index','as' => 'litar_notas']);
+    $router->post('/notes', ['uses' => 'NotesController@store','as' => 'salvar_notas']);
+    $router->delete('/notes/{id}', ['uses' => 'NotesController@destroy','as' => 'excluir_notas']);
+
+    $router->get('/sites', ['uses' => 'SitesController@index','as' => 'sites']);
+    $router->get('/sites-all', ['uses' => 'SitesController@all','as' => 'sites']);
+    $router->get('/sites/{id}', ['uses' => 'SitesController@show','as' => 'find_sites']);
+    $router->get('/sites-search', ['uses' => 'SitesController@search','as' => 'search_sites']);
+    $router->post('/sites', ['uses' => 'SitesController@store','as' => 'new_site']);
+    $router->put('/sites/{id}', ['uses' => 'SitesController@update','as' => 'update_site']);
+    $router->delete('/sites/{id}', ['uses' => 'SitesController@destroy','as' => 'delete_site']);
 
     $router->get('/blacklist', ['uses' => 'BlacklistasController@index','as' => 'blacklista']);
     $router->get('/blacklist/{id}', ['uses' => 'BlacklistasController@show','as' => 'find_blacklista']);
@@ -43,10 +48,6 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->post('/usuarios', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
     $router->put('/usuarios/{id}', ['uses' =>  'UsuariosController@update', 'as' => 'atualiza_usuario']);
     $router->get('/usuarios-search', ['uses' => 'UsuariosController@search','as' => 'search_usuarios']);
-
-    $router->get('/notes/{contato}', ['uses' => 'NotesController@index','as' => 'litar_notas']);
-    $router->post('/notes', ['uses' => 'NotesController@store','as' => 'salvar_notas']);
-    $router->delete('/notes/{id}', ['uses' => 'NotesController@destroy','as' => 'excluir_notas']);
 
     $router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
 
