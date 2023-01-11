@@ -5,8 +5,7 @@
 
 $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($router) {
 
-    $router->get('/config', ['uses' => 'ConfiguracoesController@index','as' => 'config']);
-    $router->get('/config/{id}', ['uses' => 'ConfiguracoesController@show','as' => 'find_config']);
+    $router->get('/estat', ['uses' => 'EstatController@index','as' => 'estat']);
 
     $router->get('/sites', ['uses' => 'SitesController@index','as' => 'sites']);
     $router->get('/sites/{id}', ['uses' => 'SitesController@show','as' => 'find_sites']);
