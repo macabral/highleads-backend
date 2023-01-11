@@ -94,8 +94,8 @@ Ao Contato pode ser atribuído os seguintes status:
 
 ### Score
 
-Um Score pode ser atribuído ao Contato para determinar o esforço a ser depreendido para a conversão em vendas.
-O Score é atribuído com um valor de 0 a 10.
+Um Score pode ser atribuído ao Contato para identificar aqueles mais propensos para aquisição.
+O Score é atribuído com um valor de 0 a 10. 
 ### Perfil dos Usuários
 
 O Usuário pode ter o perfil:
@@ -119,9 +119,7 @@ O Usuário pode ter o perfil:
 
 # HighLeads frontend
 
-O frontend (ainda em desenvolvimento) utilizará o NUXT (Vue) como um SPA (Single Page Application) que também será disponibilizado no mesmo servidor "shared host".
-
-Veja em https://github.com/macabral/highleads-frontend
+O frontend está disponível em https://github.com/macabral/highleads-frontend.
 
 # Lumen PHP Framework
 
