@@ -51,12 +51,17 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
 
     $router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
 
+
+    $router->get('/logout', ['uses' =>  'AuthController@logout', 'as' => 'auth_logout']);
+
 });
 
 $router->post('/v1/login', ['uses' =>  'AuthController@login', 'as' => 'auth_login']);
+
 $router->get('/v1/verifica-email', ['uses' =>  'UsuariosController@verificaEmail', 'as' => 'verifica_email']);
 $router->get('/v1/envia-codigo', ['uses' =>  'UsuariosController@enviaCodigo', 'as' => 'envia_codigo']);
 $router->put('/v1/altera-senha', ['uses' =>  'UsuariosController@alteraSenha', 'as' => 'altera_senha']);
+$router->get('/v1/refresh-token', ['uses' =>  'AuthController@refreshToken', 'as' => 'refresh_auth']);
 
 $router->get('/', function () use ($router) {
     return "Highleads-backend - " . $router->app->version();

@@ -22,6 +22,13 @@ class UsuariosSeeder extends Seeder
                 'password' => '123456',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
+            ],
+            [
+                'nome' => 'Zanelli',
+                'email'  => 'ozanelli@zoit.com.br',
+                'password' => '123456',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]
             ]);
     }

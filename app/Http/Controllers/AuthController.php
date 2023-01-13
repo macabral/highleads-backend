@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use App\Models\Usuarios;
 use Illuminate\Support\Facades\Auth;
 
+
 class AuthController extends Controller
 {
 
@@ -80,37 +81,55 @@ class AuthController extends Controller
         auth()->logout();
         return response()->json([
             'message' => 'Logout with success!'
-        ], 401);
+        ], 200);
     }
 
-    public function GenerateToken($user)
+    // public function GenerateToken($user)
+    // {
+    //     $secretKey  = env('JWT_KEY');
+    //     $tokenId    = base64_encode(random_bytes(16));
+    //     $issuedAt   = new DateTimeImmutable();
+    //     $expire     = $issuedAt->modify('+6 minutes')->getTimestamp();     
+    //     $serverName = "your.server.name";
+    //     $userID   = $user->id;                                    
+
+    //     // Create the token as an array
+    //     $data = [
+    //         'iat'  => $issuedAt->getTimestamp(),    
+    //         'jti'  => $tokenId,                     
+    //         'iss'  => $serverName,                  
+    //         'nbf'  => $issuedAt->getTimestamp(),    
+    //         'exp'  => $expire,                      
+    //         'data' => [                             
+    //             'userID' => $userID,            
+    //         ]
+    //     ];
+
+    //     // Encode the array to a JWT string.
+    //     $token = JWT::encode(
+    //         $data,      
+    //         $secretKey, 
+    //         'HS512'     
+    //     );
+
+    //     return $token;
+    // }
+
+    public function refreshToken(Request $request)
     {
-        $secretKey  = env('JWT_KEY');
-        $tokenId    = base64_encode(random_bytes(16));
-        $issuedAt   = new DateTimeImmutable();
-        $expire     = $issuedAt->modify('+6 minutes')->getTimestamp();     
-        $serverName = "your.server.name";
-        $userID   = $user->id;                                    
+        try {
+            
+            $token = auth()->refresh();
 
-        // Create the token as an array
-        $data = [
-            'iat'  => $issuedAt->getTimestamp(),    
-            'jti'  => $tokenId,                     
-            'iss'  => $serverName,                  
-            'nbf'  => $issuedAt->getTimestamp(),    
-            'exp'  => $expire,                      
-            'data' => [                             
-                'userID' => $userID,            
-            ]
-        ];
+        } catch (\Exception $e) {
 
-    // Encode the array to a JWT string.
-        $token = JWT::encode(
-            $data,      
-            $secretKey, 
-            'HS512'     
-        );
-        return $token;
+            return response()->json(['messagem' => $e], 200);
+            
+        }
+
+        return response()->json(['token' => $token]);
+
     }
+    
 
 }

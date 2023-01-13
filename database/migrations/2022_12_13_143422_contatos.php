@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->integer('id', true)->unsigned();
             $table->string('site', 255);
-            $table->string('remoteip', 15);
+            $table->string('remoteip', 20);
             $table->datetime('datahora');
             $table->string('nome', 80);
             $table->string('email', 80);
