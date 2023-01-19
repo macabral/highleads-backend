@@ -66,7 +66,7 @@ class ContatosController extends Controller
             $search = $input['search'];
             try {
 
-                $query = $query->orwhere('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orwhere('site', 'like', "%$search%");
+                $query = $query->orwhere('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orwhere('site', 'like', "%$search%")->orwhere('telefone', 'like', "%$search%");
             
             } catch (\Exception $e) {
 
