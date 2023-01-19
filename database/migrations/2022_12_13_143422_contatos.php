@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('contatos', function (Blueprint $table) {
 
             $table->integer('id', true)->unsigned();
-            $table->string('site', 255);
-            $table->string('remoteip', 20);
+            $table->string('site', 255)->default(null);
+            $table->string('remoteip', 20)->default(null);
             $table->datetime('datahora');
             $table->string('nome', 80);
             $table->string('email', 80);
-            $table->string('telefone', 15);
-            $table->string('empresa')->nullable()->default(null);
+            $table->string('telefone', 80)->default(null);
+            $table->string('empresa', 80)->nullable()->default(null);
             $table->integer('sites_fk')->unsigned()->nullable();
             $table->integer('usuarios_fk')->unsigned()->nullable()->default(null);
             $table->enum('status', [1,2,3,4,5])->default(1);

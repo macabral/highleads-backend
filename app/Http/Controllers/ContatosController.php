@@ -190,12 +190,13 @@ class ContatosController extends Controller
     {
 
         $this->validate($request, [
-            'site' => 'required|max:255',
-            'remoteip' => 'required|max:15',
+            'site' => 'max:255',
+            'remoteip' => 'max:15',
             'nome' => 'required|max:80',
             'email' => 'required|max:80',
             'datahora' => 'max:19',
-            'telefone' => 'required|max:15'
+            'telefone' => 'max:15',
+            'empresa' => 'max:80'
         ]);
 
         $input = $request->all();
