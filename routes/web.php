@@ -9,11 +9,11 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
 
     $router->get('/contatos-status/{status}', ['uses' => 'ContatosController@index','as' => 'contatos']);
     $router->get('/contatos/{id}', ['uses' => 'ContatosController@show','as' => 'find_contatos']);
-    $router->get('/contatos-search', ['uses' => 'ContatosController@search','as' => 'search_contatos']);
     $router->post('/contatos', ['uses' => 'ContatosController@store','as' => 'new_contatos']);
     $router->put('/contatos/{id}', ['uses' => 'ContatosController@update','as' => 'update_contatos']);
     $router->delete('/contatos/{id}', ['uses' => 'ContatosController@destroy','as' => 'delete_contatos']);
-
+    $router->post('/contatos-search', ['uses' => 'ContatosController@search','as' => 'search_contatos']);
+    
     $router->get('/notes/{contato}', ['uses' => 'NotesController@index','as' => 'litar_notas']);
     $router->post('/notes', ['uses' => 'NotesController@store','as' => 'salvar_notas']);
     $router->delete('/notes/{id}', ['uses' => 'NotesController@destroy','as' => 'excluir_notas']);

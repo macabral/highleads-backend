@@ -9,8 +9,78 @@ use App\Models\Contatos;
 class ContatosController extends Controller
 {
     /**
+     * @OA\POST(
+     * path="/v1/contatos-search",
+     * summary="Listar os Contatos com filtros",
+     * description="Listar os Contatos com filtros",
+     * tags={"Contato"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Filtros",
+     *    @OA\JsonContent(
+     *       required={"search","idSite","idStauts","idConsultor"},
+     *       @OA\Property(property="search", type="string", format="text", example="texto a procurar"),
+     *       @OA\Property(property="idSite", type="string", format="text", example="1"),
+     *       @OA\Property(property="idStatus", type="string", format="text", example="1"),* 
+     *       @OA\Property(property="idConsultor", type="string", format="text", example="1"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Dados Retornados.",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="created", type="string", example="true")
+     *        )
+     *     ), 
+     *   @OA\Response(
+     *    response=422,
+     *    description="Erro ao Consultar."
+     *   )
+     * )
+     */
+    public function search(Request $request)
+    {
+
+        $this->validate($request, [
+            'search' => 'max:80',
+            'site' => 'max:12',
+            'consultor' => 'max:12',
+            'status' => 'max:12',
+        ]);
+
+        $input = $request->all();
+
+        $query = Contatos::select();
+
+
+        if ($input['site'] != 0) {
+            $query = $query->where('sites_fk', '=', $input['site']);
+        }
+        if ($input['consultor'] != 0) {
+            $query = $query->where('usuarios_fk', '=', $input['consultor']);
+        }
+        if ($input['status'] != 0) {
+            $query = $query->where('status', '=', $input['status']);
+        }        
+        if (! $input['search'] == '') {
+            $search = $input['search'];
+            try {
+
+                $query = $query->orwhere('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orwhere('site', 'like', "%$search%");
+            
+            } catch (\Exception $e) {
+
+                return response()->json(['messagem' => 'Nada encontrado ' . $e], 404);
+                
+            }
+        }
+
+        return response()->json($query->orderBy('datahora', 'DESC')->get());
+    }
+
+    /**
      * @OA\Get(
-     * path="/v1/contatos-satus/",
+     * path="/v1/contatos-status/",
      * summary="Exibe os Contatos cadastrados filtrado por status",
      * description="Lista os contatos cadastrados filtrados por status",
      * tags={"Contato"},
@@ -81,49 +151,6 @@ class ContatosController extends Controller
                 ], 404);
 
         }
-        
-    }
-
-    /**
-     * @OA\Get(
-     * path="/v1/contatos-search?email={email}",
-     * summary="Procurar contatos por email",
-     * description="Procurar contatos por email",
-     * tags={"Contato"},
-     * @OA\Response(response="200", description="Retorna dados do Contato."),
-     * @OA\Parameter(
-     *    description="email",
-     *    in="query",
-     *    name="email",
-     *    required=true,
-     *    example="teste@dominio.com",
-     *    @OA\Schema(
-     *       type="string"
-     *    )
-     * )
-     * )
-     */
-    public function search(Request $request)
-    {
-
-
-        $this->validate($request, [
-            'search' => 'required|max:80',
-        ]);
-
-        $search = $request->get('search');
-               
-        try {
-
-            $query = Contatos::where('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orderBy('datahora', 'DESC')->get();
-
-        } catch (\Exception $e) {
-
-            return response()->json(['messagem' => $e], 404);
-            
-        }
-
-        return response()->json($query);
         
     }
 

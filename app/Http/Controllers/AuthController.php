@@ -118,12 +118,12 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         try {
-            
+           
             $token = auth()->refresh();
 
         } catch (\Exception $e) {
 
-            return response()->json(['messagem' => $e], 200);
+            return response()->json(['messagem' => $e], 401);
             
         }
 
