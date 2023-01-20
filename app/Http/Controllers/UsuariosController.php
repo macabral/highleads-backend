@@ -365,4 +365,47 @@ class UsuariosController extends Controller
 
     }
 
+    /**
+     * @OA\Delete(
+     * path="/v1/usuarios/{id}",
+     * summary="Exclui um registro",
+     * description="Exclui um registro por seu ID.",
+     * tags={"Sites"},
+     * @OA\Response(response="201", description="Excluído com sucesso.",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="excluído", type="string", example="true")
+     *    )
+     * ),
+     * @OA\Response(response="404", description="Não encontrado.",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="mensagem", type="string", example="Não encontrado")
+     *    ) 
+     * ),
+     * @OA\Parameter(
+     *    description="ID",
+     *    in="path",
+     *    name="id",
+     *    required=true,
+     *    example="1",
+     *    @OA\Schema(
+     *       type="integer",
+     *       format="int64"
+     *    )
+     * ) 
+     * )
+     */
+    public function destroy($id)
+    {
+        try {
+
+            Usuarios::findOrFail($id)->delete();
+
+            return response()->json(['excluído' => true], 201);
+
+        } catch (ModelNotFoundException $e) {
+
+            return response()->json(['messagem' => 'Não encontrado'], 404);
+
+        }
+    }
 }

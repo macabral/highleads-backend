@@ -48,6 +48,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->post('/usuarios', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
     $router->put('/usuarios/{id}', ['uses' =>  'UsuariosController@update', 'as' => 'atualiza_usuario']);
     $router->get('/usuarios-search', ['uses' => 'UsuariosController@search','as' => 'search_usuarios']);
+    $router->delete('/usuarios/{id}', ['uses' =>  'UsuariosController@destroy', 'as' => 'usuarios_delete',]);
 
     $router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
 
