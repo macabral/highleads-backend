@@ -5,7 +5,7 @@
 
 $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($router) {
 
-    $router->get('/estat', ['uses' => 'EstatController@index','as' => 'estat']);
+    $router->get('/estat/{perfil}/{idUsuario}', ['uses' => 'EstatController@index','as' => 'estat']);
 
     $router->get('/contatos-status/{status}', ['uses' => 'ContatosController@index','as' => 'contatos']);
     $router->get('/contatos/{id}', ['uses' => 'ContatosController@show','as' => 'find_contatos']);

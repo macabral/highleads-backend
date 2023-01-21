@@ -100,7 +100,7 @@ O Score é atribuído com um valor de 0 a 10.
 
 O Usuário pode ter o perfil:
 - [1] - Usuário Administrador
-- [2] - Consultor de Vendas
+- [2] - Consultor
 ### Instalando o HighLeads no servidor (shared host)
 
 1. Crie um arquivo compactado TAR do HighLeads da sua instalação local

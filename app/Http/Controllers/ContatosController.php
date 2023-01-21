@@ -46,6 +46,8 @@ class ContatosController extends Controller
             'site' => 'max:12',
             'consultor' => 'max:12',
             'status' => 'max:12',
+            'perfil' => 'required|max:12',
+            'idUsuario' => 'required|max:12'
         ]);
 
         $input = $request->all();
@@ -64,18 +66,23 @@ class ContatosController extends Controller
         }        
         if (! $input['search'] == '') {
             $search = $input['search'];
-            try {
-
-                $query = $query->orwhere('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orwhere('site', 'like', "%$search%")->orwhere('telefone', 'like', "%$search%");
-            
-            } catch (\Exception $e) {
-
-                return response()->json(['messagem' => 'Nada encontrado ' . $e], 404);
-                
-            }
+            $query = $query->orwhere('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orwhere('site', 'like', "%$search%")->orwhere('telefone', 'like', "%$search%");
         }
 
-        return response()->json($query->orderBy('datahora', 'DESC')->get());
+        if ($input['perfil'] == '2') {
+            $query->where('usuarios_fk', '=', $input['idUsuario']);
+        }
+
+        try {
+
+            return response()->json($query->orderBy('datahora', 'DESC')->get());
+
+        } catch (\Exception $e) {
+
+            return response()->json(['messagem' => 'Nada encontrado ' . $e], 404);
+            
+        }
+
     }
 
     /**
