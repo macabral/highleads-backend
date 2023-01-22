@@ -26,6 +26,15 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->put('/sites/{id}', ['uses' => 'SitesController@update','as' => 'update_site']);
     $router->delete('/sites/{id}', ['uses' => 'SitesController@destroy','as' => 'delete_site']);
 
+    
+    $router->get('/outbound/{perfil}/{usuario}', ['uses' => 'OutboundController@index','as' => 'outbound']);
+    $router->get('/outbound-all', ['uses' => 'OutboundController@all','as' => 'outbound_all']);
+    $router->get('/outbound/{id}', ['uses' => 'OutboundController@show','as' => 'find_outbound']);
+    $router->get('/outbound-search/{perfil}/{usuario}', ['uses' => 'OutboundController@search','as' => 'search_outbound']);
+    $router->post('/outbound', ['uses' => 'OutboundController@store','as' => 'new_outbound']);
+    $router->put('/outbound/{id}', ['uses' => 'OutboundController@update','as' => 'update_outbound']);
+    $router->delete('/outbound/{id}', ['uses' => 'OutboundController@destroy','as' => 'delete_outbound']);
+
     $router->get('/blacklist', ['uses' => 'BlacklistasController@index','as' => 'blacklista']);
     $router->get('/blacklist/{id}', ['uses' => 'BlacklistasController@show','as' => 'find_blacklista']);
     $router->get('/blacklist-search', ['uses' => 'BlacklistasController@search','as' => 'search_blacklista']);
