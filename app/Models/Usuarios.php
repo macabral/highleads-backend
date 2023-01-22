@@ -36,4 +36,8 @@ class Usuarios extends Model implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Notes::class);
     }
 
+    public function outbounds()
+    {
+        return $this->hasMany(Outbounds::class);
+    }
 }

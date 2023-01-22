@@ -7,6 +7,7 @@ use App\Models\Contatos;
 use App\Models\Blacklistas;
 use App\Models\Sites;
 use App\Models\Emails;
+use App\Models\Outbounds;
 class ImapController extends Controller
 {
     public function index() 
@@ -24,7 +25,7 @@ class ImapController extends Controller
         // ****** Conecta ao servidor IMAP
         
         // $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
-        $mbox = imap_open($host, $usuario, $pass);
+        $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
 
         if ($mbox) {
 
@@ -76,12 +77,24 @@ class ImapController extends Controller
 
                     if (count($ret) == 0) {
 
-                        // ****** procura o responsável pela landing page
+                        // ****** verifica se o contato está em outbound
+
+                        $ret = Outbounds::where('email', $email)->with('Usuarios')->get();
+
+                        if (count($ret) == 0) {
+                            $usuarios_fk = null;
+                            $outboundEmail = '';
+                        } else {
+                            $usuarios_fk = $ret[0]->usuarios_fk;
+                            $outboundEmail = $ret[0]->usuarios->email;
+                        }
+
+
+                        // ****** procura a landing page
                         
                         $ret = Sites::where('pagina',$url)->get();
 
                         if (count($ret) > 0) {
-                            $ret = json_decode($ret[0]);
 
                             // ***** Insere o contato na tabela de Contatos
 
@@ -92,22 +105,28 @@ class ImapController extends Controller
                                 'site' => $url,
                                 'datahora' => $dataH,
                                 'remoteip' => $remoteIP,
-                                'sites_fk' => $ret->id
+                                'usuarios_fk' => $usuarios_fk,
+                                'sites_fk' => $ret[0]->id
                             ];
-                            
+
                             try {
 
-                                $contatos = Contatos::create($input);
+                                Contatos::create($input);
 
-                                if ($ret->mail !== '') {
+                                $destino = $ret[0]->email;
+                                if ($outboundEmail !== '') {
+                                    $destino = $destino . ';' . $outboundEmail;
+                                }
+
+                                if ($destino !== '') {
                                 
                                     // ****** envia email para o responsável pela landing page
 
                                     $input = [
-                                        "para" => $ret->email,
+                                        "para" => $destino,
                                         "assunto" => "[$appSigla] Novo Contato",
                                         "prioridade" => 0,
-                                        "texto" => "Prezado(a) Sr(a) $ret->responsavel,<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
+                                        "texto" => "Prezado(a) Sr(a),<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
                                     ];
 
                                     try {

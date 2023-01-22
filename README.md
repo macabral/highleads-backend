@@ -9,6 +9,8 @@ Gerenciar os leads em uma conta de email é muito trabalhoso. Assim, o HighLeads
 
 Você pode ter várias landing pages apontando para a mesma conta de email.  O HighLeads envia um aviso de 'Novo Contato' para as contas de email que você indicar para cada landing page.
 
+O HighLeads também possui uma lista de emails para contatos outbound (via email marketing). Quando um contato inbound é recebido é verificado se este contato existe a lista outbound, associando o Consultor responsável pelo contato.
+
 O Highleds possui um serviço backend para o serviço de API e o frontend - interface para o gerenciamento dos leads.  Esses serviços podem ser executados no mesmo servidor que você publica as suas landing pages.
 
 
@@ -79,6 +81,7 @@ Para testar a API, se tiver problema de CORS o middleware CorsMiddleware faz a l
 - emails      : lista os emails a serem enviados pela plataforma HighLeads
 - codigos     : armazena os códigos de recuperação de senha (enviador por email para o usuário)
 - notes       : armazena as anotações do acompanhamento do contato
+- outbound    : lista de emails para contato outbound por email marketing
 
 Para detalhes das tabelas veja na pasta \database\migrations.
 

@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Outbounds extends Model
 {
     protected $fillable = ['nome','email','iscliente','iscontato','usuarios_fk'];
+    
+    public function usuarios()
+    {
+        return $this->belongsTo(Usuarios::class,'usuarios_fk','id');
+    }
+
 }
