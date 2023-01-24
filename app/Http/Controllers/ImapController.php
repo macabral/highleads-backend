@@ -25,7 +25,7 @@ class ImapController extends Controller
         // ****** Conecta ao servidor IMAP
         
         // $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
-        $mbox = imap_open($host, $usuario, $pass);
+        $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
 
         if ($mbox) {
 
@@ -77,24 +77,34 @@ class ImapController extends Controller
 
                     if (count($ret) == 0) {
 
-                        // ****** verifica se o contato está em outbound
-
-                        $ret = Outbounds::where('email', $email)->with('Usuarios')->get();
-
-                        if (count($ret) == 0) {
-                            $usuarios_fk = null;
-                            $outboundEmail = '';
-                        } else {
-                            $usuarios_fk = $ret[0]->usuarios_fk;
-                            $outboundEmail = $ret[0]->usuarios->email;
-                        }
-
-
                         // ****** procura a landing page
                         
-                        $ret = Sites::where('pagina',$url)->get();
+                        $ret = Sites::where('pagina', $url)->get();
 
                         if (count($ret) > 0) {
+
+                            // ****** verifica se o contato está em outbound
+
+                            $ret = Outbounds::where('email', $email)->with('Usuarios')->get();
+
+                            if (count($ret) == 0) {
+                                $usuarios_fk = null;
+                                $outboundEmail = '';
+                            } else {
+                                $usuarios_fk = $ret[0]->usuarios_fk;
+                                $outboundEmail = $ret[0]->usuarios->email;
+
+                                $outbound = Outbounds::findOrFail($ret[0]->id);
+
+                                $input = [
+                                    'iscontato' => 1
+                                ];
+
+                                // atualiza outbound marcando iscontato
+                                $outbound->fill($input);
+                                $outbound->save();
+
+                            }
 
                             // ***** Insere o contato na tabela de Contatos
 
@@ -145,7 +155,6 @@ class ImapController extends Controller
                                 echo $input['nome'] . ' =>Erro ao inserir o contato.';
                                 
                             }
-
                             
                         }
 

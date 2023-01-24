@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Outbounds extends Model
 {
-    protected $fillable = ['nome','email','iscliente','iscontato','usuarios_fk'];
+    protected $fillable = ['nome','email','iscliente','iscontato','usuarios_fk','ativo'];
     
     public function usuarios()
     {
