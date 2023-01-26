@@ -227,11 +227,18 @@ class UsuariosController extends Controller
         
         $appSigla = env('APP_SIGLA');
 
+        //lê template resources/template/altera-senha.html
+        $path = base_path() . '/resources/templates/alterar-senha.html';
+        $texto = file_get_contents($path);
+        $texto = str_replace('[NOME]', $user->nome, $texto);
+        $texto = str_replace('[CODIGO]', $token, $texto );
+        $texto = str_replace('[EMPRESA]', $appSigla, $texto);
+
         $input = [
             "para" => $user->email,
-            "assunto" => "[$appSigla] Código de Confirmação",
+            "assunto" => "[HighLeads ] Código de Confirmação",
             "prioridade" => 0,
-            "texto" => "Prezado(a) Sr(a) $user->nome,<p>Conforme sua solicitação estamos encaminhado o códgio abaixo para você alterar sua senha de login.<p><fontsize='18'>$token</font></p>"
+            "texto" => $texto
         ];
 
         try {

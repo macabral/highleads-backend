@@ -267,8 +267,7 @@ class EmailsController extends Controller
             $mail->Subject = utf8_decode($item->assunto);
 
             // Email body content
-            $content = '<font face="verdana" size="2">' . $item->texto . "<br><p>Atenciosamente,<br><br>$appNome</p>";
-            $mail->Body = utf8_decode($content);
+            $mail->Body = $item->texto;
 
             // Anexos
             if (!empty($item->anexo)) {

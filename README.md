@@ -99,16 +99,21 @@ Ao Contato pode ser atribuído os seguintes status:
 
 Um Score pode ser atribuído ao Contato para identificar aqueles mais propensos para aquisição.
 O Score é atribuído com um valor de 0 a 10. 
+
 ### Perfil dos Usuários
 
 O Usuário pode ter o perfil:
 - [1] - Usuário Administrador
 - [2] - Consultor
+
+### Templates
+
+O HighLeads utiliza templates para o envio de emails. Os templates são armazenados na pasta resources/templates. 
 ### Instalando o HighLeads no servidor (shared host)
 
 1. Crie um arquivo compactado TAR do HighLeads da sua instalação local
 2. Crie um subdominio no shared host. Utilize o nome api-highleads (por exemplo: https://api-highleads.dominio.com.br)
-2. Copie o arquivo compactado para a pasta do subdominio no shared host
+2. Copie o arquivo compactado para a pasta do subdominio no shared 
 3. Acesse o servidor pelo SSH e vá para a pasta do subdominio
 4. Descompacte o arquivo com o comando tar -xvf <nome_do_arquivo_compactado.tar>
 5. Certifique que o .htacess foi copiado para a pasta raiz do subdominio

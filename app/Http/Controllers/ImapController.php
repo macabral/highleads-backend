@@ -129,14 +129,24 @@ class ImapController extends Controller
                                 }
 
                                 if ($destino !== '') {
+
+                                    //lê template resources/template/novo-contato.html
+                                    $path = base_path() . '/resources/templates/novo-contato.html';
+                                    $texto = file_get_contents($path);
+                                    $texto = str_replace('[CONTATO_NOME]', $nome, $texto);
+                                    $texto = str_replace('[CONTATO_EMAIL]', $email, $texto );
+                                    $texto = str_replace('[CONTATO_TELEFONE]', $telefone, $texto );
+                                    $texto = str_replace('[PAGINA]', $url, $texto );
+                                    $texto = str_replace('[CONTATO_DATA]', $dataEmail, $texto );
+                                    $texto = str_replace('[EMPRESA]', $appSigla, $texto);
                                 
                                     // ****** envia email para o responsável pela landing page
 
                                     $input = [
                                         "para" => $destino,
-                                        "assunto" => "[$appSigla] Novo Contato",
+                                        "assunto" => "[HighLeads] Novo Contato",
                                         "prioridade" => 0,
-                                        "texto" => "Prezado(a) Sr(a),<p>Um novo contato foi recebido.</p>Nome: $nome <br>Email: $email <br>Telefone:  $telefone <br>Página: $url <br> Data: $dataEmail"
+                                        "texto" => $texto
                                     ];
 
                                     try {
