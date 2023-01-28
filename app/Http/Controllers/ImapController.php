@@ -25,7 +25,7 @@ class ImapController extends Controller
         // ****** Conecta ao servidor IMAP
         
         // $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
-        $mbox = imap_open($host, $usuario, $pass, OP_READONLY);
+        $mbox = imap_open($host, $usuario, $pass);
 
         if ($mbox) {
 

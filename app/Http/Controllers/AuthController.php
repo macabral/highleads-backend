@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DateTimeImmutable;
 use App\Models\Usuarios;
+use App\Models\Emails;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -31,11 +31,39 @@ class AuthController extends Controller
 
             $user->save();
 
+            // envia email para o usuário
+        
+            $appSigla = env('APP_SIGLA');
+
+            //lê template resources/template/altera-senha.html
+            $path = base_path() . '/resources/templates/novo-usuario.html';
+            $texto = file_get_contents($path);
+            $texto = str_replace('[NOME]', $user->nome, $texto);
+            $texto = str_replace('[EMPRESA]', $appSigla, $texto);
+
+            $input = [
+                "para" => $user->email,
+                "assunto" => "[HighLeads ] Novo Usuário",
+                "prioridade" => 1,
+                "texto" => $texto
+            ];
+
+            try {
+
+                Emails::create($input);
+                
+            } catch (\Exception $e) {
+
+                return response()->json(['message' => $e], 409);
+                
+            }
+
             return response()->json(['user' => $user, 'message' => 'CREATED'], 201);
 
         } catch (\Exception $e) {
 
             return response()->json(['message' => $e], 409);
+
         }
 
     }

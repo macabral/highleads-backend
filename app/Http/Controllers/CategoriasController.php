@@ -4,55 +4,49 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
-use App\Models\Outbounds;
+use App\Models\Categorias;
 
-
-class OutboundController extends Controller
+class CategoriasController extends Controller
 {
 
     /**
      * @OA\Get(
-     * path="/v1/outbound-all/",
+     * path="/v1/categorias-all/",
      * summary="Retorna todos registros cadastrados",
      * description="Retorna os registros cadastrados.",
-     * tags={"outbound"},
-     * @OA\Response(response="200", description="Lista dos Outbound"),
+     * tags={"Categorias"},
+     * @OA\Response(response="200", description="Lista das Categorias"),
      * )
      */
     public function all()
     {
 
-        return Outbounds::all();
+        return Categorias::where("ativo", 1)->get();
 
     }
 
     /**
      * @OA\Get(
-     * path="/v1/outbound/",
+     * path="/v1/categorias/",
      * summary="Exibe os registros cadastrados",
      * description="Lista os registros cadastrados.",
-     * tags={"outbound"},
-     * @OA\Response(response="200", description="Lista dos Outbound"),
+     * tags={"Categorias"},
+     * @OA\Response(response="200", description="Lista das Categorias"),
      * )
      */
-    public function index($perfil, $usuario)
+    public function index()
     {
 
-        if ($perfil == 1) {
-            return Outbounds::paginate(perPage: 15);
-        } else {
-            return Outbounds::where('usuarios_fk', '=', $usuario)->paginate(perPage: 15);
-        }
+        return Categorias::paginate(perPage: 15);
 
     }
 
     /**
      * @OA\Get(
-     * path="/v1/outbound/{id}",
+     * path="/v1/categorias/{id}",
      * summary="Exibe um registro",
      * description="Exibe o registro por seu ID.",
-     * tags={"outbound"},
+     * tags={"Categorias"},
      * @OA\Response(response="200", description="Retorna dados."),
      * @OA\Response(response="404", description="Não encontrado."),
      * @OA\Parameter(
@@ -72,7 +66,7 @@ class OutboundController extends Controller
     {
         try {
 
-            return Outbounds::findOrFail($id);
+            return Categorias::findOrFail($id);
 
         } catch (ModelNotFoundException $e) {
 
@@ -83,39 +77,35 @@ class OutboundController extends Controller
 
     /**
      * @OA\Get(
-     * path="/v1/outbound-search?site={site}",
-     * summary="Procurar registro por site",
-     * description="Procurar registro por site",
-     * tags={"outbound"},
+     * path="/v1/categorias-search?site={site}",
+     * summary="Procurar registro por categoria",
+     * description="Procurar registro por categoria",
+     * tags={"Categorias"},
      * @OA\Response(response="200", description="Retorna dados."),
      * @OA\Parameter(
-     *    description="site",
+     *    description="categoria",
      *    in="query",
      *    name="site",
      *    required=true,
-     *    example="http://teste.com",
+     *    example="Governo",
      *    @OA\Schema(
      *       type="string"
      *    )
      * )
      * )
      */
-    public function search($perfil, $usuario, Request $request)
+    public function search(Request $request)
     {
 
         $this->validate($request, [
-            'search' => 'required|max:80',
+            'texto' => 'required|max:80',
         ]);
 
-        $search = $request->get('search');
+        $search = $request->get('texto');
       
         try {
-            if ($perfil == 1) {
-                $query = Outbounds::where('nome', 'like',  "%$search%")->orwhere('email', 'like',  "%$search%")->get();
-            } else {
-                $sql = "select * from outbounds where usuarios_fk = $usuario and (nome like '%$search%' or email like '%$search%')";
-                $query = DB::select($sql);
-            }
+
+            $query = Categorias::where('descricao', 'like',  "%$search%")->get();
 
         } catch (\Exception $e) {
 
@@ -129,19 +119,17 @@ class OutboundController extends Controller
     
     /**
      * @OA\POST(
-     * path="/v1/outbound",
+     * path="/v1/categorias",
      * summary="Criar um novo registro",
      * description="Criar um novo registro",
-     * tags={"outbound"},
+     * tags={"Categorias"},
      * @OA\RequestBody(
      *    required=true,
-     *    description="Dados do Site",
+     *    description="Dados da Categoria",
      *    @OA\JsonContent(
-     *       required={"pagina","email","telefone","nome"},
-     *       @OA\Property(property="pagina", type="string", format="text", example="https://zoit.com.br"),
-     *       @OA\Property(property="responsavel", type="string", format="text", example="José da Silva"),* 
-     *       @OA\Property(property="email", type="email", format="text", example="mercedes68@example.org"),
-     *       @OA\Property(property="telefone", type="string", format="text", example="2199999999"),
+     *       required={"descricao","ativo"},
+     *       @OA\Property(property="descricao", type="string", format="text", example="Governo"),
+     *       @OA\Property(property="ativo", type="integer", example="1"),
      *    ),
      * ),
      * @OA\Response(
@@ -164,18 +152,13 @@ class OutboundController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nome' => 'max:80',
-            'email' => 'required|max:80',
-            'usuarios_fk' => 'max:12',
-            'categorias_fk' => 'max:12',
-            'iscliente' => 'max:1',
-            'iscontato' => 'max:1',
-            'ativo' => 'max:1'
+            'descricao' => 'required|max:254',
+            'ativo' => 'required|max:1'
         ]);
 
         try {
 
-            $site = Outbounds::create($request->all());
+            $site = Categorias::create($request->all());
 
             return response()->json(['created' => true], 201);
 
@@ -188,10 +171,10 @@ class OutboundController extends Controller
 
     /**
      * @OA\PUT(
-     * path="/v1/outbound/{id}",
+     * path="/v1/categorias/{id}",
      * summary="Alterar um registro",
      * description="Alterar um registro por ID",
-     * tags={"outbound"},
+     * tags={"Categorias"},
      * @OA\Parameter(
      *    description="ID",
      *    in="path",
@@ -207,11 +190,9 @@ class OutboundController extends Controller
      *    required=true,
      *    description="Dados do registro",
      *    @OA\JsonContent(
-     *       required={"pagina","responsavel","email","telefone"},
-     *       @OA\Property(property="pagina", type="string", format="text", example="https://zoit.com.br"),
-     *       @OA\Property(property="responsavel", type="string", format="text", example="José da Silva"),* 
-     *       @OA\Property(property="email", type="email", format="text", example="mercedes68@example.org"),
-     *       @OA\Property(property="telefone", type="string", format="text", example="2199999999"),
+     *       required={"escricao","ativo"},
+     *       @OA\Property(property="descricao", type="string", format="text", example="Governo"),
+     *       @OA\Property(property="ativo", type="integer", example="1"), 
      *    ),
      * ),
      * @OA\Response(
@@ -238,17 +219,13 @@ class OutboundController extends Controller
     {
 
         $this->validate($request, [
-            'nome' => 'max:80',
-            'email' => 'required|max:80',
-            'usuarios_fk' => 'max:12',
-            'iscliente' => 'max:1',
-            'iscontato' => 'max:1',
+            'descricao' => 'max:254',
             'ativo' => 'max:1'
         ]);
 
         try {
 
-            $Outbound = Outbounds::findOrFail($id);
+            $Categorias = Categorias::findOrFail($id);
 
         } catch (ModelNotFoundException $e) {
 
@@ -260,7 +237,7 @@ class OutboundController extends Controller
 
         try {
             
-            $Outbound->fill($input);
+            $Categorias->fill($input);
 
         } catch (\Exception $e) {
 
@@ -268,7 +245,7 @@ class OutboundController extends Controller
             
         }
 
-        $Outbound->save();
+        $Categorias->save();
 
         return response()->json(['updated' => true], 201);
 
@@ -276,10 +253,10 @@ class OutboundController extends Controller
 
     /**
      * @OA\Delete(
-     * path="/v1/outbound/{id}",
+     * path="/v1/categorias/{id}",
      * summary="Exclui um registro",
      * description="Exclui um registro por seu ID.",
-     * tags={"outbound"},
+     * tags={"Categorias"},
      * @OA\Response(response="201", description="Excluído com sucesso.",
      *    @OA\JsonContent(
      *       @OA\Property(property="excluído", type="string", example="true")
@@ -307,7 +284,7 @@ class OutboundController extends Controller
     {
         try {
 
-            Outbounds::findOrFail($id)->delete();
+            Categorias::findOrFail($id)->delete();
 
             return response()->json(['excluído' => true], 201);
 

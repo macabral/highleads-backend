@@ -13,17 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('outbounds', function (Blueprint $table) {
+        Schema::create('categorias', function (Blueprint $table) {
 
             $table->integer('id', true)->unsigned();
-            $table->string('nome', 80);
-            $table->string('email', 80)->unique()->notNullable();
-            $table->integer('usuarios_fk')->unsigned()->nullable()->default(null);
-            $table->integer('iscliente')->default(0);
-            $table->integer('iscontato')->default(0);
+            $table->string('descricao', 254);
+            $table->integer('ativo')->default(0);
             $table->timestamps();
-        
-            $table->foreign('usuarios_fk')->references('id')->on('usuarios');
         });
     }
 
@@ -34,6 +29,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outbound');
+        Schema::dropIfExists('categorias');
+
     }
 };

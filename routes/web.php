@@ -50,8 +50,6 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->put('/emails/{id}', ['uses' => 'EmailsController@update','as' => 'update_emails']);
     $router->delete('/emails/{id}', ['uses' => 'EmailsController@destroy','as' => 'delete_emails']);
 
-    $router->post('/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
-
     $router->get('/usuarios', ['uses' =>  'UsuariosController@index', 'as' => 'usuarios_lista',]);
     $router->get('/usuarios-profile', ['uses' =>  'UsuariosController@profile', 'as' => 'usuarios_profile', 'middleware' => 'auth']);
     $router->post('/usuarios', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
@@ -59,8 +57,17 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->get('/usuarios-search', ['uses' => 'UsuariosController@search','as' => 'search_usuarios']);
     $router->delete('/usuarios/{id}', ['uses' =>  'UsuariosController@destroy', 'as' => 'usuarios_delete',]);
 
+    $router->get('/categorias', ['uses' => 'CategoriasController@index','as' => 'categorias']);
+    $router->get('/categorias-all', ['uses' => 'CategoriasController@all','as' => 'categorias_all']);
+    $router->get('/categorias/{id}', ['uses' => 'CategoriasController@show','as' => 'find_categorias']);
+    $router->get('/categorias-search', ['uses' => 'CategoriasController@search','as' => 'search_categorias']);
+    $router->post('/categorias', ['uses' => 'CategoriasController@store','as' => 'new_categorias']);
+    $router->put('/categorias/{id}', ['uses' => 'CategoriasController@update','as' => 'update_categorias']);
+    $router->delete('/categorias/{id}', ['uses' => 'CategoriasController@destroy','as' => 'delete_categorias']);
+
     $router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
 
+    $router->post('/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
 
     $router->get('/logout', ['uses' =>  'AuthController@logout', 'as' => 'auth_logout']);
 
