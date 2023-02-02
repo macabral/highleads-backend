@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('categorias_fk')->unsigned()->nullable()->default(null);
             $table->integer('iscliente')->default(0);
             $table->integer('iscontato')->default(0);
-            $table->integer('ativo')->default(0);
+            $table->integer('ativo')->default(1);
 
             $table->timestamps();
         
