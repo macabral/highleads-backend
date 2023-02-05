@@ -236,7 +236,7 @@ class UsuariosController extends Controller
 
         $input = [
             "para" => $user->email,
-            "assunto" => "[HighLeads ] Código de Confirmação",
+            "assunto" => "[HighLeads] Código de Confirmação",
             "prioridade" => 0,
             "texto" => $texto
         ];

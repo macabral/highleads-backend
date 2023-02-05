@@ -85,16 +85,16 @@ class ImapController extends Controller
 
                             // ****** verifica se o contato está em outbound
 
-                            $ret = Outbounds::where('email', $email)->with('Usuarios')->get();
+                            $outbound = Outbounds::where('email', $email)->with('Usuarios')->get();
 
-                            if (count($ret) == 0) {
+                            if (count($outbound) == 0) {
                                 $usuarios_fk = null;
                                 $outboundEmail = '';
                             } else {
-                                $usuarios_fk = $ret[0]->usuarios_fk;
-                                $outboundEmail = $ret[0]->usuarios->email;
+                                $usuarios_fk = $outbound[0]->usuarios_fk;
+                                $outboundEmail = $outbound[0]->usuarios->email;
 
-                                $outbound = Outbounds::findOrFail($ret[0]->id);
+                                $outbound = Outbounds::findOrFail($outbound[0]->id);
 
                                 $input = [
                                     'iscontato' => 1
