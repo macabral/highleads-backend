@@ -45,7 +45,6 @@ class ImportarController extends Controller
         try {
           
             $fileName = time() . '_' . $request->file->getClientOriginalName();
-
             $request->file('file')->storeAs('uploads', $fileName, 'public');
             $categoria_fk = $request->categoria_fk;
             $usuarios_fk = $request->usuarios_fk;
@@ -68,7 +67,10 @@ class ImportarController extends Controller
                     // null
                 }
              }
-             fclose($file);
+
+            fclose($file);
+
+            unlink($fileStor);
 
             return response()->json(['messagem' => 'Sucesso!'], 200);
 

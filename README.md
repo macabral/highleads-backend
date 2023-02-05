@@ -24,7 +24,7 @@ O HighLeads-backend roda com o PHP 8.0.27 e laravel/lumen 9.1.5.
 
 1. instale o Composer  (https://getcomposer.org/download/)
 2. faça o download do PHP 8 e configure o ambiente (path) (https://www.php.net/downloads.php)
-3. verifique se as extensões no php.ini estão habilitadas (extension=imap, extension=mbstring, extension=pdo_mysql, extension=fileinfo)
+3. verifique se as extensões no php.ini estão habilitadas (imap, mbstring, pdo_mysql, fileinfo)
 4. faça o download do HighLeads-backend
 5. execute o comando  "composer install"
 ### Configurações iniciais

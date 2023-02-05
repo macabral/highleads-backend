@@ -54,9 +54,8 @@ class ContatosController extends Controller
 
         $query = Contatos::select();
 
-
         if ($input['site'] != 0) {
-            $query = $query->where('sites_fk', '=', $input['site']);
+            $query = $query->where('sites_fk', $input['site']);
         }
         if ($input['consultor'] != 0) {
             $query = $query->where('usuarios_fk', '=', $input['consultor']);
@@ -68,14 +67,13 @@ class ContatosController extends Controller
             $search = $input['search'];
             $query = $query->orwhere('nome', 'like', "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like', "%$search%")->orwhere('site', 'like', "%$search%")->orwhere('telefone', 'like', "%$search%");
         }
-
         if ($input['perfil'] == '2') {
             $query->where('usuarios_fk', '=', $input['idUsuario']);
         }
 
         try {
 
-            return response()->json($query->orderBy('datahora', 'DESC')->get());
+            return $query->orderBy('score', 'DESC')->orderBy('datahora', 'DESC')->paginate(8, ['*'], 'page', $input['page']);;
 
         } catch (\Exception $e) {
 
@@ -111,7 +109,7 @@ class ContatosController extends Controller
 
         try {
 
-            $query = Contatos::where('status', '=', $status)->orderBy('score','desc')->get();
+            $query = Contatos::where('status', '=', $status)->orderBy('score','desc')->paginate(perPage: 8);
         
         } catch (\Exception $e) {
 
