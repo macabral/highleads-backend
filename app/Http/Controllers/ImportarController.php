@@ -53,14 +53,20 @@ class ImportarController extends Controller
 
             $file = fopen($fileStor, "r");
 
-            while ( ($data = fgetcsv($file, 100, ",")) !== false) {
+            while ( ($data = fgetcsv($file, 250, ",",'"')) !== false) {
                 $input = [
                     'nome' => $data[0],
                     'email' => $data[1],
+                    'empresa' => $data[2],
+                    'posicao' => $data[3],
+                    'telefone' => $data[4],
+                    'cidade' => $data[5],
                     'categorias_fk' => $categoria_fk,
                     'usuarios_fk' => $usuarios_fk
                 ];
+
                 try {
+
                     Outbounds::create($input);
 
                 } catch (\Exception $e) {

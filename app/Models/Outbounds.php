@@ -6,13 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Outbounds extends Model
 {
-    protected $fillable = ['nome','email','iscliente','iscontato','usuarios_fk','categorias_fk','ativo'];
+    protected $fillable = ['nome','email','empresa','posicao','telefone','cidade','iscliente','iscontato','usuarios_fk','categorias_fk','ativo'];
     
     public function usuarios()
     {
         return $this->belongsTo(Usuarios::class,'usuarios_fk','id');
-        return $this->belongsTo(Categorias::class,'categorias_fk','id');
 
+    }
+
+    public function categorias()
+    {
+        return $this->belongsTo(Categorias::class,'categorias_fk','id');
     }
 
 }

@@ -73,7 +73,7 @@ class ContatosController extends Controller
 
         try {
 
-            return $query->orderBy('score', 'DESC')->orderBy('datahora', 'DESC')->paginate(8, ['*'], 'page', $input['page']);;
+            return $query->orderBy('score', 'DESC')->orderBy('datahora', 'DESC')->paginate(8, ['*'], 'page', $input['page']);
 
         } catch (\Exception $e) {
 

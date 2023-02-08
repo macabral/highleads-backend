@@ -18,6 +18,10 @@ return new class extends Migration
             $table->integer('id', true)->unsigned();
             $table->string('nome', 80);
             $table->string('email', 80)->unique()->notNullable();
+            $table->string('empresa', 120);
+            $table->string('posicao', 120);
+            $table->string('telefone', 120);
+            $table->string('cidade', 120);
             $table->integer('usuarios_fk')->unsigned()->nullable()->default(null);
             $table->integer('categorias_fk')->unsigned()->nullable()->default(null);
             $table->integer('iscliente')->default(0);

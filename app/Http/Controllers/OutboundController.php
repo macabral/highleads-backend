@@ -82,8 +82,8 @@ class OutboundController extends Controller
     }
 
     /**
-     * @OA\Get(
-     * path="/v1/outbound-search?site={site}",
+     * @OA\Post(
+     * path="/v1/outbound-search",
      * summary="Procurar registro por site",
      * description="Procurar registro por site",
      * tags={"outbound"},
@@ -100,31 +100,43 @@ class OutboundController extends Controller
      * )
      * )
      */
-    public function search($perfil, $usuario, Request $request)
+    public function search(Request $request)
     {
 
         $this->validate($request, [
-            'search' => 'required|max:80',
+            'categorias_fk' => 'required',
+            'perfil' => 'required',
+            'idUsuario' => 'required',
+            'page' => 'required'
         ]);
+       
+        $input = $request->all();
 
-        $search = $request->get('search');
-      
+        $query = Outbounds::select();
+
         try {
-            if ($perfil == 1) {
-                $query = Outbounds::where('nome', 'like',  "%$search%")->orwhere('email', 'like',  "%$search%")->get();
-            } else {
-                $sql = "select * from outbounds where usuarios_fk = $usuario and (nome like '%$search%' or email like '%$search%')";
-                $query = DB::select($sql);
+
+            if ($input['perfil'] == '2') {
+                $query->where('usuarios_fk', '=', $input['idUsuario']);
             }
 
-        } catch (\Exception $e) {
+            if (! $input['categorias_fk'] == 0) {
+                $query->where('categorias_fk', '=', $input['categorias_fk']);
+            }
 
-            return response()->json(['messagem' => $e], 404);
-            
-        }
+            if (! $input['search'] == '') {
+                $search = $input['search'];
+                $query->where('nome', 'like',  "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like',  "%$search%")->orwhere('posicao', 'like',  "%$search%");
+            }
 
-        return response()->json($query);
-        
+            return $query->with('Categorias')->orderBy('nome')->paginate(15, ['*'], 'page', $input['page']);
+    
+            } catch (\Exception $e) {
+    
+                return response()->json(['messagem' => 'Nada encontrado ' . $e], 404);
+                
+            }
+       
     }
     
     /**

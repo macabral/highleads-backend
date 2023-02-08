@@ -21,7 +21,7 @@ class CategoriasController extends Controller
     public function all()
     {
 
-        return Categorias::where("ativo", 1)->get();
+        return Categorias::where("ativo", 1)->orderBy('descricao')->get();
 
     }
 

@@ -30,7 +30,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->get('/outbound/{perfil}/{usuario}', ['uses' => 'OutboundController@index','as' => 'outbound']);
     $router->get('/outbound-all', ['uses' => 'OutboundController@all','as' => 'outbound_all']);
     $router->get('/outbound/{id}', ['uses' => 'OutboundController@show','as' => 'find_outbound']);
-    $router->get('/outbound-search/{perfil}/{usuario}', ['uses' => 'OutboundController@search','as' => 'search_outbound']);
+    $router->post('/outbound-search', ['uses' => 'OutboundController@search','as' => 'search_outbound']);
     $router->post('/outbound', ['uses' => 'OutboundController@store','as' => 'new_outbound']);
     $router->put('/outbound/{id}', ['uses' => 'OutboundController@update','as' => 'update_outbound']);
     $router->delete('/outbound/{id}', ['uses' => 'OutboundController@destroy','as' => 'delete_outbound']);
