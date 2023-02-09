@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('cc', 255)->default('');
             $table->string('bcc', 255)->default('');
             $table->string('assunto', 255);
-            $table->text('texto');
+            $table->longText('texto');
             $table->integer('erro')->default(0);
             $table->integer('enviado')->default(0);
             $table->string('anexos', 255)->default('');

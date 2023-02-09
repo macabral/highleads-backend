@@ -25,7 +25,6 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->post('/sites', ['uses' => 'SitesController@store','as' => 'new_site']);
     $router->put('/sites/{id}', ['uses' => 'SitesController@update','as' => 'update_site']);
     $router->delete('/sites/{id}', ['uses' => 'SitesController@destroy','as' => 'delete_site']);
-
     
     $router->get('/outbound/{perfil}/{usuario}', ['uses' => 'OutboundController@index','as' => 'outbound']);
     $router->get('/outbound-all', ['uses' => 'OutboundController@all','as' => 'outbound_all']);
@@ -34,6 +33,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->post('/outbound', ['uses' => 'OutboundController@store','as' => 'new_outbound']);
     $router->put('/outbound/{id}', ['uses' => 'OutboundController@update','as' => 'update_outbound']);
     $router->delete('/outbound/{id}', ['uses' => 'OutboundController@destroy','as' => 'delete_outbound']);
+    $router->post('/importar-outbound', ['uses' => 'ImportarController@outbound','as' => 'importar_outbound']);
 
     $router->get('/blacklist', ['uses' => 'BlacklistasController@index','as' => 'blacklista']);
     $router->get('/blacklist/{id}', ['uses' => 'BlacklistasController@show','as' => 'find_blacklista']);
@@ -65,7 +65,13 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->put('/categorias/{id}', ['uses' => 'CategoriasController@update','as' => 'update_categorias']);
     $router->delete('/categorias/{id}', ['uses' => 'CategoriasController@destroy','as' => 'delete_categorias']);
 
-    $router->post('/importar-outbound', ['uses' => 'ImportarController@outbound','as' => 'importar_outbound']);
+    $router->get('/campanhas/{perfil}/{usuario}', ['uses' => 'CampanhasController@index','as' => 'campanhas']);
+    $router->get('/campanhas-all', ['uses' => 'CampanhasController@all','as' => 'campanhas_all']);
+    $router->get('/campanhas/{id}', ['uses' => 'CampanhasController@show','as' => 'find_campanhas']);
+    $router->post('/campanhas-search', ['uses' => 'CampanhasController@search','as' => 'search_campanhas']);
+    $router->post('/campanhas', ['uses' => 'CampanhasController@store','as' => 'new_campanhas']);
+    $router->put('/campanhas/{id}', ['uses' => 'CampanhasController@update','as' => 'update_campanhas']);
+    $router->delete('/campanhas/{id}', ['uses' => 'CampanhasController@destroy','as' => 'delete_campanhas']);
 
     $router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
 

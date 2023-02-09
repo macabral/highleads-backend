@@ -4,55 +4,54 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
-use App\Models\Outbounds;
+use App\Models\Campanhas;
 
 
-class OutboundController extends Controller
+class CampanhasController extends Controller
 {
 
     /**
      * @OA\Get(
-     * path="/v1/outbound-all/",
+     * path="/v1/campanhas-all/",
      * summary="Retorna todos registros cadastrados",
      * description="Retorna os registros cadastrados.",
-     * tags={"outbound"},
-     * @OA\Response(response="200", description="Lista dos Outbound"),
+     * tags={"campanhas"},
+     * @OA\Response(response="200", description="Lista dos campanhas"),
      * )
      */
     public function all()
     {
 
-        return Outbounds::all();
+        return Campanhas::all();
 
     }
 
     /**
      * @OA\Get(
-     * path="/v1/outbound/",
+     * path="/v1/campanhas/",
      * summary="Exibe os registros cadastrados",
      * description="Lista os registros cadastrados.",
-     * tags={"outbound"},
-     * @OA\Response(response="200", description="Lista dos Outbound"),
+     * tags={"campanhas"},
+     * @OA\Response(response="200", description="Lista dos campanhas"),
      * )
      */
     public function index($perfil, $usuario)
     {
 
         if ($perfil == 1) {
-            return Outbounds::paginate(perPage: 15);
+            return Campanhas::paginate(perPage: 15);
         } else {
-            return Outbounds::where('usuarios_fk', '=', $usuario)->paginate(perPage: 15);
+            return Campanhas::where('usuarios_fk', '=', $usuario)->paginate(perPage: 15);
         }
 
     }
 
     /**
      * @OA\Get(
-     * path="/v1/outbound/{id}",
+     * path="/v1/campanhas/{id}",
      * summary="Exibe um registro",
      * description="Exibe o registro por seu ID.",
-     * tags={"outbound"},
+     * tags={"campanhas"},
      * @OA\Response(response="200", description="Retorna dados."),
      * @OA\Response(response="404", description="Não encontrado."),
      * @OA\Parameter(
@@ -72,7 +71,7 @@ class OutboundController extends Controller
     {
         try {
 
-            return Outbounds::findOrFail($id);
+            return Campanhas::findOrFail($id);
 
         } catch (ModelNotFoundException $e) {
 
@@ -83,10 +82,10 @@ class OutboundController extends Controller
 
     /**
      * @OA\Post(
-     * path="/v1/outbound-search",
+     * path="/v1/campanhas-search",
      * summary="Procurar registro por site",
      * description="Procurar registro por site",
-     * tags={"outbound"},
+     * tags={"campanhas"},
      * @OA\Response(response="200", description="Retorna dados."),
      * @OA\Parameter(
      *    description="site",
@@ -104,32 +103,22 @@ class OutboundController extends Controller
     {
 
         $this->validate($request, [
-            'categorias_fk' => 'required',
-            'perfil' => 'required',
-            'idUsuario' => 'required',
             'page' => 'required'
         ]);
        
         $input = $request->all();
 
-        $query = Outbounds::select();
+        $query = Campanhas::select('id','titulo','assunto','emailhtml');
 
         try {
 
-            if ($input['perfil'] == '2') {
-                $query->where('usuarios_fk', $input['idUsuario']);
-            }
-
-            if (! $input['categorias_fk'] == 0) {
-                $query->where('categorias_fk', '=', $input['categorias_fk']);
-            }
 
             if (! $input['search'] == '') {
                 $search = $input['search'];
-                $query->where('nome', 'like',  "%$search%")->orwhere('email', 'like', "%$search%")->orwhere('empresa', 'like',  "%$search%")->orwhere('posicao', 'like',  "%$search%");
+                $query->where('titulo', 'like',  "%$search%");
             }
 
-            return $query->with('Categorias')->orderBy('nome')->paginate(15, ['*'], 'page', $input['page']);
+            return $query->orderBy('titulo')->paginate(15, ['*'], 'page', $input['page']);
     
             } catch (\Exception $e) {
     
@@ -141,10 +130,10 @@ class OutboundController extends Controller
     
     /**
      * @OA\POST(
-     * path="/v1/outbound",
+     * path="/v1/campanhas",
      * summary="Criar um novo registro",
      * description="Criar um novo registro",
-     * tags={"outbound"},
+     * tags={"campanhas"},
      * @OA\RequestBody(
      *    required=true,
      *    description="Dados do Site",
@@ -176,18 +165,13 @@ class OutboundController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nome' => 'max:80',
-            'email' => 'required|max:80',
-            'usuarios_fk' => 'max:12',
-            'categorias_fk' => 'max:12',
-            'iscliente' => 'max:1',
-            'iscontato' => 'max:1',
-            'ativo' => 'max:1'
+            'titulo' => 'required|max:120',
+            'assunto' => 'required|max:120'
         ]);
 
         try {
 
-            $site = Outbounds::create($request->all());
+            $site = Campanhas::create($request->all());
 
             return response()->json(['created' => true], 201);
 
@@ -200,10 +184,10 @@ class OutboundController extends Controller
 
     /**
      * @OA\PUT(
-     * path="/v1/outbound/{id}",
+     * path="/v1/campanhas/{id}",
      * summary="Alterar um registro",
      * description="Alterar um registro por ID",
-     * tags={"outbound"},
+     * tags={"campanhas"},
      * @OA\Parameter(
      *    description="ID",
      *    in="path",
@@ -250,17 +234,13 @@ class OutboundController extends Controller
     {
 
         $this->validate($request, [
-            'nome' => 'max:80',
-            'email' => 'required|max:80',
-            'usuarios_fk' => 'max:12',
-            'iscliente' => 'max:1',
-            'iscontato' => 'max:1',
-            'ativo' => 'max:1'
+            'titulo' => 'required|max:120',
+            'assunto' => 'required|max:120'
         ]);
 
         try {
 
-            $Outbound = Outbounds::findOrFail($id);
+            $campanhas = Campanhas::findOrFail($id);
 
         } catch (ModelNotFoundException $e) {
 
@@ -272,7 +252,7 @@ class OutboundController extends Controller
 
         try {
             
-            $Outbound->fill($input);
+            $campanhas->fill($input);
 
         } catch (\Exception $e) {
 
@@ -280,7 +260,7 @@ class OutboundController extends Controller
             
         }
 
-        $Outbound->save();
+        $campanhas->save();
 
         return response()->json(['updated' => true], 201);
 
@@ -288,10 +268,10 @@ class OutboundController extends Controller
 
     /**
      * @OA\Delete(
-     * path="/v1/outbound/{id}",
+     * path="/v1/campanhas/{id}",
      * summary="Exclui um registro",
      * description="Exclui um registro por seu ID.",
-     * tags={"outbound"},
+     * tags={"campanhas"},
      * @OA\Response(response="201", description="Excluído com sucesso.",
      *    @OA\JsonContent(
      *       @OA\Property(property="excluído", type="string", example="true")
@@ -319,7 +299,7 @@ class OutboundController extends Controller
     {
         try {
 
-            Outbounds::findOrFail($id)->delete();
+            Campanhas::findOrFail($id)->delete();
 
             return response()->json(['excluído' => true], 201);
 

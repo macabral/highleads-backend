@@ -141,8 +141,7 @@ class EmailsController extends Controller
             'para' => 'required|max:255',
             'cc' => 'max:255',
             'bcc' => 'max:255',
-            'assunto' => 'required|max:80',
-            'texto' => 'required|max:512',
+            'assunto' => 'required|max:120',
             'prioridade' => 'max:2'
         ]);
 
@@ -267,7 +266,7 @@ class EmailsController extends Controller
             $mail->Subject = utf8_decode($item->assunto);
 
             // Email body content
-            $mail->Body = $item->texto;
+            $mail->Body = utf8_decode($item->texto);
 
             // Anexos
             if (!empty($item->anexo)) {
