@@ -73,6 +73,16 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->put('/campanhas/{id}', ['uses' => 'CampanhasController@update','as' => 'update_campanhas']);
     $router->delete('/campanhas/{id}', ['uses' => 'CampanhasController@destroy','as' => 'delete_campanhas']);
 
+    $router->get('/campanhas-emails/{id}', ['uses' => 'Campanhas_emailsController@index','as' => 'campanhas_emails']);
+    $router->get('/campanhas-emails/{id}/{item}', ['uses' => 'Campanhas_emailsController@show','as' => 'find_campanhas_emails']);
+    $router->post('/campanhas-emails-search', ['uses' => 'Campanhas_emailsController@search','as' => 'search_campanhas_emails']);
+    $router->post('/campanhas-emails', ['uses' => 'Campanhas_emailsController@store','as' => 'new_campanhas_emails']);
+    $router->put('/campanhas-emails/{id}', ['uses' => 'Campanhas_emailsController@update','as' => 'update_campanhas_emails']);
+    $router->delete('/campanhas-emails/{id}', ['uses' => 'Campanhas_emailsController@destroy','as' => 'delete_campanhas_emails']);
+    $router->delete('/campanhas-emails-all/{id}', ['uses' => 'Campanhas_emailsController@destroy_all','as' => 'delete_all_campanhas_emails']);
+    $router->post('/campanhas-emails-filtrar', ['uses' => 'Campanhas_emailsController@filtrar','as' => 'new_campanhas_emails_filtrar']);
+    $router->post('/campanhas-emails-incluir', ['uses' => 'Campanhas_emailsController@incluir','as' => 'new_campanhas_emails_incluir']);
+
     $router->get('/imap-reader', ['uses' =>  'ImapController@index', 'as' => 'imap_reader']);
 
     $router->post('/register', ['uses' =>  'AuthController@register', 'as' => 'auth_register']);
