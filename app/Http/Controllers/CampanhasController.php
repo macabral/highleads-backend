@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Campanhas;
 
-
 class CampanhasController extends Controller
 {
 
@@ -108,7 +107,7 @@ class CampanhasController extends Controller
        
         $input = $request->all();
 
-        $query = Campanhas::select('id','titulo','assunto','emailhtml');
+        $query = Campanhas::select('id','titulo','assunto','emailhtml', 'qtdemails','qtdvisitas','qtdcancelados');
 
         try {
 

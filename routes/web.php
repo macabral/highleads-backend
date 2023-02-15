@@ -34,6 +34,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->put('/outbound/{id}', ['uses' => 'OutboundController@update','as' => 'update_outbound']);
     $router->delete('/outbound/{id}', ['uses' => 'OutboundController@destroy','as' => 'delete_outbound']);
     $router->post('/importar-outbound', ['uses' => 'ImportarController@outbound','as' => 'importar_outbound']);
+    $router->get('/valida-email', ['uses' =>  'ImportarController@valida', 'as' => 'valida_email']);
 
     $router->get('/blacklist', ['uses' => 'BlacklistasController@index','as' => 'blacklista']);
     $router->get('/blacklist/{id}', ['uses' => 'BlacklistasController@show','as' => 'find_blacklista']);
@@ -89,6 +90,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
 
     $router->get('/logout', ['uses' =>  'AuthController@logout', 'as' => 'auth_logout']);
 
+
 });
 
 $router->post('/v1/login', ['uses' =>  'AuthController@login', 'as' => 'auth_login']);
@@ -96,6 +98,7 @@ $router->get('/v1/verifica-email', ['uses' =>  'UsuariosController@verificaEmail
 $router->get('/v1/envia-codigo', ['uses' =>  'UsuariosController@enviaCodigo', 'as' => 'envia_codigo']);
 $router->put('/v1/altera-senha', ['uses' =>  'UsuariosController@alteraSenha', 'as' => 'altera_senha']);
 $router->get('/v1/refresh-token', ['uses' =>  'AuthController@refreshToken', 'as' => 'refresh_auth']);
+$router->get('/v1/cancelar-inscricao/{id}', ['uses' => 'OutboundController@cancelar','as' => 'cancelar_outbound']);
 
 $router->get('/', function () use ($router) {
     return "Highleads-backend - " . $router->app->version();

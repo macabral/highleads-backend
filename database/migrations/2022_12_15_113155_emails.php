@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,6 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
+
         Schema::create('emails', function (Blueprint $table) {
 
             $table->integer('id', true)->unsigned();
@@ -25,6 +27,8 @@ return new class extends Migration
             $table->integer('enviado')->default(0);
             $table->string('anexos', 255)->default('');
             $table->tinyInteger('prioridade')->default(1);
+            $table->datetime('dtenviar')->default(DB::raw('CURRENT_TIMESTAMP'));
+
             $table->timestamps();
         
             $table->index('prioridade');

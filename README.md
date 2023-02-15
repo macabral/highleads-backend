@@ -106,6 +106,9 @@ O Usuário pode ter o perfil:
 - [1] - Usuário Administrador
 - [2] - Consultor
 
+### Verificador de email
+
+https://verificaemail.com.br/
 ### Templates
 
 O HighLeads utiliza templates para o envio de emails. Os templates são armazenados na pasta resources/templates. 

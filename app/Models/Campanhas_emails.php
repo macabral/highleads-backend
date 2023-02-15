@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Campanhas_emails extends Model
 {
-    protected $fillable = ['campanhas_fk', 'outbounds_fk', 'uniqueid'];
+    protected $fillable = ['campanhas_fk', 'outbounds_fk', 'uniqueid','qtdemails','qtdvisitas','qtdcancelados'];
 
     public function campanhas()
     {

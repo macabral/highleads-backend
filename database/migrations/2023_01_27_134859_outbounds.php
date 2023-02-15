@@ -24,14 +24,17 @@ return new class extends Migration
             $table->string('cidade', 120);
             $table->integer('usuarios_fk')->unsigned()->nullable()->default(null);
             $table->integer('categorias_fk')->unsigned()->nullable()->default(null);
-            $table->integer('iscliente')->default(0);
-            $table->integer('iscontato')->default(0);
-            $table->integer('ativo')->default(1);
+            $table->tinyIntegerr('iscliente')->default(0);
+            $table->tinyInteger('iscontato')->default(0);
+            $table->tinyInteger('isvalid')->default(0);
+            $table->tinyInteger('ativo')->default(1);
 
             $table->timestamps();
         
             $table->foreign('usuarios_fk')->references('id')->on('usuarios');
             $table->foreign('categorias_fk')->references('id')->on('categorias');
+            
+            $table->unique(['campanhas_fk','outbounds_fk']);
 
         });
     }

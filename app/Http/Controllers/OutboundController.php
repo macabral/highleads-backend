@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 use App\Models\Outbounds;
-
+use App\Models\Campanhas;
+use App\Models\Campanhas_emails;
 
 class OutboundController extends Controller
 {
@@ -182,6 +182,7 @@ class OutboundController extends Controller
             'categorias_fk' => 'max:12',
             'iscliente' => 'max:1',
             'iscontato' => 'max:1',
+            'isvalid' => 'max:1',
             'ativo' => 'max:1'
         ]);
 
@@ -255,6 +256,7 @@ class OutboundController extends Controller
             'usuarios_fk' => 'max:12',
             'iscliente' => 'max:1',
             'iscontato' => 'max:1',
+            'isvalid' => 'max:1',
             'ativo' => 'max:1'
         ]);
 
@@ -329,4 +331,51 @@ class OutboundController extends Controller
 
         }
     }
+
+    /**
+     * @OA\Get(
+     * path="/v1/cancelar-inscricao/",
+     * summary="Cancelar contato outbound",
+     * description="Marca o contato outbound como inativo",
+     * tags={"outbound"},
+     * @OA\Response(response="200", description="Contato Outbound marcado como inativo."),
+     * )
+     */
+    public function cancelar($id)
+    {
+
+        $campanhas_emails = Campanhas_emails::where('uniqueid',$id)->get();
+
+        if (count($campanhas_emails) > 0) {
+
+            try {
+
+                $outbounds = Outbounds::findOrFail($campanhas_emails[0]->outbounds_fk);
+
+                if ($outbounds->ativo == 1) {
+                    
+                    $outbounds->ativo = 0;
+                    $outbounds->save();
+
+                    $campanhas = Campanhas::findOrFail($campanhas_emails[0]->campanhas_fk);
+                    $campanhas->qtdcancelados = $campanhas->qtdcancelados + 1;
+                    $campanhas->save();
+                }
+
+            } catch (\Exception $e) {
+
+                return response()->json(['messagem' => $e], 422);
+                
+            }  
+            
+            return response()->json(['mensagem' => 'Contato inativo'], 200);
+
+        } else {
+
+            return response()->json(['messagem' => 'UniqueId não encontrado.'], 422);
+
+        }
+
+    }
+
 }

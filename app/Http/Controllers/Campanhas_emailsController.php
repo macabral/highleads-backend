@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Campanhas_emails;
+use App\Models\Campanhas;
 use App\Models\Outbounds;
 
 class Campanhas_emailsController extends Controller
@@ -22,7 +23,33 @@ class Campanhas_emailsController extends Controller
     public function index($id)
     {
  
-        return Campanhas_emails::where('campanhas_fk', $id)->with('Outbounds')->get();
+        $emails = Campanhas_emails::where('campanhas_fk', $id)->with('Outbounds')->get();
+
+        if (count($emails) > 0) {
+
+            $id = $emails[0]->campanhas_fk;
+
+            $input = [
+                'qtdemails' => count($emails)
+            ];
+         
+            try {
+
+                $campanhas = Campanhas::findOrFail($id);
+
+                $campanhas->qtdemails = count($emails);
+
+                $campanhas->save();
+
+            } catch (\Exception $e) {
+    
+                return response()->json(['messagem' => $e], 200);
+                
+            }
+
+        }
+
+        return $emails;
 
     }
 
@@ -358,7 +385,7 @@ class Campanhas_emailsController extends Controller
     {
      
         $input = $request->all();
-        $query = Outbounds::select();
+        $query = Outbounds::select()->where('isvalid',1)->where('ativo',1);
 
         try {
 
@@ -433,30 +460,36 @@ class Campanhas_emailsController extends Controller
 
         $outbounds = $input['emails'];
 
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxywz';
+        $n = 30;
+
         foreach($outbounds as $item) {
 
-            $outbound = Outbounds::findOrFail($item);
-
-            $chave = $outbound['email'];
-
-            $req = [
-                'outbounds_fk' => $item,
-                'campanhas_fk' => $input['idcampanha'],
-                'uniqueid' => $chave
-            ];
-
             try {
+
+                $randomString = '';
+                
+                for ($i = 0; $i < $n; $i++) {
+                    $index = rand(0, strlen($characters) - 1);
+                    $randomString .= $characters[$index];
+                }
+
+                $req = [
+                    'outbounds_fk' => $item,
+                    'campanhas_fk' => $input['idcampanha'],
+                    'uniqueid' => $input['idcampanha'].$randomString
+                ];
             
                 Campanhas_emails::create($req);
     
             } catch (\Exception $e) {
     
-                
+                // ignore
             }
 
         }
 
-        return response()->json(['messagem' => 'emails incluídos ' . $e], 200);
+        return response()->json(['messagem' => 'emails incluídos '], 200);
 
     }    
 }
