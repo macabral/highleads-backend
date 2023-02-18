@@ -73,6 +73,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($rou
     $router->post('/campanhas', ['uses' => 'CampanhasController@store','as' => 'new_campanhas']);
     $router->put('/campanhas/{id}', ['uses' => 'CampanhasController@update','as' => 'update_campanhas']);
     $router->delete('/campanhas/{id}', ['uses' => 'CampanhasController@destroy','as' => 'delete_campanhas']);
+    $router->get('/campanhas-distribuir/{id}', ['uses' => 'CampanhasController@distribuir','as' => 'distribuir_campanhas']);
 
     $router->get('/campanhas-emails/{id}', ['uses' => 'Campanhas_emailsController@index','as' => 'campanhas_emails']);
     $router->get('/campanhas-emails/{id}/{item}', ['uses' => 'Campanhas_emailsController@show','as' => 'find_campanhas_emails']);
@@ -99,6 +100,8 @@ $router->get('/v1/envia-codigo', ['uses' =>  'UsuariosController@enviaCodigo', '
 $router->put('/v1/altera-senha', ['uses' =>  'UsuariosController@alteraSenha', 'as' => 'altera_senha']);
 $router->get('/v1/refresh-token', ['uses' =>  'AuthController@refreshToken', 'as' => 'refresh_auth']);
 $router->get('/v1/cancelar-inscricao/{id}', ['uses' => 'OutboundController@cancelar','as' => 'cancelar_outbound']);
+$router->get('/v1/cancelar-uniqueid/{id}', ['uses' => 'OutboundController@uniqueid','as' => 'uniqueid_outbound']);
+$router->get('/v1/campanha-clicou/{id}', ['uses' => 'OutboundController@clicou','as' => 'clicou_outbound']);
 
 $router->get('/', function () use ($router) {
     return "Highleads-backend - " . $router->app->version();

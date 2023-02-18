@@ -27,11 +27,13 @@ return new class extends Migration
             $table->integer('enviado')->default(0);
             $table->string('anexos', 255)->default('');
             $table->tinyInteger('prioridade')->default(1);
+            $table->datetime('dtenviado')->default(null);
             $table->datetime('dtenviar')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->timestamps();
         
-            $table->index('prioridade');
+            $table->index(['dtenviar','enviado','prioridade']);
+            $table->index(['dtenviado','enviado','prioridade']);
 
         });
     }

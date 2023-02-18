@@ -17,13 +17,14 @@ return new class extends Migration
 
             $table->integer('id', true)->unsigned();
             $table->string('titulo', 120)->unique()->notNullable();
-            $table->string('assunto,120');
+            $table->string('assunto,200');
             $table->longText('emailhtml');
             $table->tinyInteger('enviado')->default(0);
             $table->Integer('qtdemails')->default(0);
             $table->Integer('qtdcancelados')->default(0);
             $table->Integer('qtdvisitas')->default(0);
-            $table->datetime('dtenviar')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('dtenvio')->default(null);
+            $table->datetime('hrenvio')->default(null); 
 
             $table->timestamps();
         

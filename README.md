@@ -74,15 +74,6 @@ Para testar a API, se tiver problema de CORS o middleware CorsMiddleware faz a l
 
 ### Tabelas
 
-- contatos    : armazena os dados dos formulários das landing pages
-- usuarios    : cadastro de usuários
-- sites       : lista as páginas (landing pages) associadas aos seus responsáveis
-- blacklist   : lista dos emails cadastrados para não serem incluídos como contatos
-- emails      : lista os emails a serem enviados pela plataforma HighLeads
-- codigos     : armazena os códigos de recuperação de senha (enviador por email para o usuário)
-- notes       : armazena as anotações do acompanhamento do contato
-- outbound    : lista de emails para contato outbound por email marketing
-
 Para detalhes das tabelas veja na pasta \database\migrations.
 
 ### Status do Contato
@@ -106,12 +97,45 @@ O Usuário pode ter o perfil:
 - [1] - Usuário Administrador
 - [2] - Consultor
 
+### Outbounds
+
+Você pode cadastrar emails para contato Outbound e classificá-los em Categorias para utilizar em suas Campanhas de email Marketing.
+O cadastro do contato outbound fica associado ao Consultor que o inseriu. Se o contato preencher o formulário de Inbound o mesmo será associado ao Consultor automaticamente.
+
+Na importação do contato Outbound é necessário preencher uma planilha com os seguintes campos: nome, empresa, posição, telefone e cidade. Estes campos devem estar separados por vírgulas no arquivo TXT ou CSV. Na importação você deve definir a categoria dos contatos Outbound.
+
+Durante a importação é verificado se o email é válido conforme a formatação e se existe um servidor de email para o endereço. Entretant, não é verificado se a caixa postal existe. O email que não esteja validado não é inserido na base de contatos Outbounds. 
 ### Verificador de email
 
-https://verificaemail.com.br/
+Para verificar completamente um endereço email utilizar sites que validem quanto a existência da conta de email como https://verificaemail.com.br/.
+
+É importante que os emails da sua lista de Outbound esteja verificada. Os emails não verificados não podem ser incluídos em Campanhas de email Marketing.
+### Campanhas de email Marketing
+
+O HighLeads também pode ser utilizado para envio de Campanhas de email Marketing, selecionando os contatos Outbounds. 
+
+### Prioridade no envio de emails
+
+Para o envio de emails o HighLeads considera a prioridade "0" como envio imediato e prioridade "1" entra na fila de envios.  A prioridade "10" é utilizada para o envio de emails das Campanhas.
+
+Exemplo:
+
+- Mensagens de alteração de senha tem prioridade "0"
+- Mensagens de novo usuário tem prioridade "0"
+- Mensagens de teste de envio de campanha tem prioridade "0"
+- Mensagens de aviso de novo contato tem prioridade "1"
+- Mensagens de campanhas tem prioridade "10" 
+
+No arquivo .ENV é configurado o total de emails que podem ser enviados por dia (APP_EMAIL_DAY) e a quantidade de emails (APP_EMAIL_MAX) que são enviados a cada agendamento de envio. Esses valores são necessários para que a sua conta de email não seja sujeita a bloqueios (ou pelo menos para tentar não ser bloqueada). Para grandes envios de emails procure um serviço apropriado (veja em https://github.com/jonathandion/awesome-emails).
+
+Quando o limite de envios de email por dia (APP_EMAIL_DAY) é alcançado, somente as mensagens com prioridade "0" e "1" são enviadas.
+
+Os parâmetros APP_EMAIL_DAY e APP_EMAIL_MAX devem ser estabelecidos conforme as restrições de seu provedor. Vale lembar que uma campanha com muitos emails pode demorar a ser totalmente enviada, portanto, envie campanhas focadas para limitar a quantidade de emails.
+
 ### Templates
 
 O HighLeads utiliza templates para o envio de emails. Os templates são armazenados na pasta resources/templates. 
+
 ### Instalando o HighLeads no servidor (shared host)
 
 1. Crie um arquivo compactado TAR do HighLeads da sua instalação local

@@ -145,7 +145,7 @@ class ImapController extends Controller
                                     $input = [
                                         "para" => $destino,
                                         "assunto" => "[HighLeads] Novo Contato",
-                                        "prioridade" => 0,
+                                        "prioridade" => 1,
                                         "texto" => $texto
                                     ];
 

@@ -221,6 +221,8 @@ class EmailsController extends Controller
 
         $mail = new PHPMailer(true);
 
+        $now = now();
+
         //Server settings
         $mail->SMTPDebug = 0;                                       //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
@@ -231,7 +233,20 @@ class EmailsController extends Controller
         $mail->SMTPSecure = true;                                   //Enable implicit TLS encryption
         $mail->Port       = env('SMTP_PORT', '');                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-        $cursor = Emails::all()->where('enviado','=',0)->take(10)->sortBy('prioridade');
+        $max = env('APP_EMAIL_MAX', 10);
+        $max_day = env('APP_EMAIL_DAY', 100);
+
+        $qtd = Emails::where('dtenviado', '>=', date('Y-m-d').' 00:00:00')->where('enviado','=',1)->where('prioridade','>',1)->count();
+
+        if ($qtd > $max_day) {
+
+            $cursor = Emails::all()->where('dtenviar', '<', $now)->where('enviado','=',0)->where('prioridade','<',2)->take($max);
+
+        } else {
+
+            $cursor = Emails::all()->where('dtenviar', '<', $now)->where('enviado','=',0)->take($max)->sortBy('prioridade');
+
+        }
 
         $mail->addReplyTo($mail->Username);
         $mail->setFrom($mail->Username);
@@ -281,15 +296,18 @@ class EmailsController extends Controller
             }
 
             try {
+
                 $mail->send();
 
                 $emails = Emails::findOrFail($item->id);
                 $emails->enviado = 1;
+                $emails->dtenviado = date('Y-m-d H:i');
                 $emails->save();
 
             } catch (Exception $e) {
                 echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
+
             $mail->clearAddresses();
             $mail->clearAttachments();
         }

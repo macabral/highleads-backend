@@ -332,6 +332,48 @@ class OutboundController extends Controller
         }
     }
 
+        /**
+     * @OA\Get(
+     * path="/v1/cancelar-uniqueid/",
+     * summary="Ler dados do contato outbound pelo uniqueid",
+     * description="Ler dados do contato outbound pelo uniqueid",
+     * tags={"outbound"},
+     * @OA\Response(response="200", description="Dados do Contato Outbound"),
+     * )
+     */
+    public function uniqueid($id)
+    {
+
+        $campanhas_emails = Campanhas_emails::where('uniqueid',$id)->get();
+
+        if (count($campanhas_emails) > 0) {
+
+            try {
+
+                $appSite = env('APP_SITE');
+                $outbounds = Outbounds::select('email')->where('id', $campanhas_emails[0]->outbounds_fk)->get();
+
+                $reg = [
+                    "email" => $outbounds[0]->email,
+                    "site" => $appSite
+                ];
+
+                return response()->json($reg, 200);
+
+            } catch (\Exception $e) {
+
+                return response()->json(['messagem' => $e], 422);
+                
+            }  
+            
+        } else {
+
+            return response()->json(['messagem' => 'UniqueId não encontrado.'], 422);
+
+        }
+
+    }
+
     /**
      * @OA\Get(
      * path="/v1/cancelar-inscricao/",
@@ -378,4 +420,46 @@ class OutboundController extends Controller
 
     }
 
+    /**
+     * @OA\Get(
+     * path="/v1/campanha-clicou/",
+     * summary="Clicou para abrir o link da campanha",
+     * description="Clicou para abrir o link da campanha",
+     * tags={"outbound"},
+     * @OA\Response(response="200", description="Clicou para abrir o link da campanha."),
+     * )
+     */
+    public function clicou($id)
+    {
+
+        $campanhas_emails = Campanhas_emails::where('uniqueid',$id)->get();
+
+        if (count($campanhas_emails) > 0) {
+
+            try {
+
+                $outbounds = Outbounds::findOrFail($campanhas_emails[0]->outbounds_fk);
+
+                if ($outbounds->ativo == 1) {
+                    
+                    $campanhas = Campanhas::findOrFail($campanhas_emails[0]->campanhas_fk);
+                    $campanhas->qtdvisitas = $campanhas->qtdvisitas + 1;
+                    $campanhas->save();
+                }
+
+            } catch (\Exception $e) {
+
+                return response()->json(['messagem' => $e], 422);
+                
+            }  
+            
+            return response()->json(['mensagem' => 'Contato inativo'], 200);
+
+        } else {
+
+            return response()->json(['messagem' => 'UniqueId não encontrado.'], 422);
+
+        }
+
+    }
 }

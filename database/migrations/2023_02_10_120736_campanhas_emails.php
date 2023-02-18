@@ -24,8 +24,8 @@ return new class extends Migration
 
             $table->unique(['campanhas_fk','outbouds_fk']);
 
-            $table->foreign('campanhas_fk')->references('id')->on('campanhas');
-            $table->foreign('outbounds_fk')->references('id')->on('outbounds');
+            $table->foreign('campanhas_fk')->references('id')->on('campanhas')->onDelete('cascade');
+            $table->foreign('outbounds_fk')->references('id')->on('outbounds')->onDelete('cascade');
 
         });
     }

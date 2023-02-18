@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Campanhas extends Model
 {
-    protected $fillable = ['titulo', 'assunto', 'emailhtml'];
+    protected $fillable = ['titulo', 'assunto', 'emailhtml', 'dtenvio', 'hrenvio'];
 }

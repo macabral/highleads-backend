@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Campanhas;
+use App\Models\Campanhas_emails;
+use App\Models\Emails;
 
 class CampanhasController extends Controller
 {
@@ -107,7 +109,7 @@ class CampanhasController extends Controller
        
         $input = $request->all();
 
-        $query = Campanhas::select('id','titulo','assunto','emailhtml', 'qtdemails','qtdvisitas','qtdcancelados');
+        $query = Campanhas::select('id','titulo','assunto','emailhtml', 'qtdemails','qtdvisitas','qtdcancelados','dtenvio','hrenvio','enviado');
 
         try {
 
@@ -301,6 +303,79 @@ class CampanhasController extends Controller
             Campanhas::findOrFail($id)->delete();
 
             return response()->json(['excluído' => true], 201);
+
+        } catch (ModelNotFoundException $e) {
+
+            return response()->json(['messagem' => 'Não encontrado'], 404);
+
+        }
+    }
+
+        /**
+     * @OA\Get(
+     * path="/v1/campanhas-distribuir/{id}",
+     * summary="Distribuir Campanha",
+     * description="Insere os emails na tabela de envio de emails",
+     * tags={"campanhas"},
+     * @OA\Response(response="200", description="Retorna dados."),
+     * @OA\Response(response="404", description="Não encontrado."),
+     * @OA\Parameter(
+     *    description="ID",
+     *    in="path",
+     *    name="id",
+     *    required=true,
+     *    example="1",
+     *    @OA\Schema(
+     *       type="integer",
+     *       format="int64"
+     *    )
+     * ) 
+     * )
+     */
+    public function distribuir($id)
+    {
+        try {
+
+            $campanhas = Campanhas::findOrFail($id);
+
+            $dtenviar = date('Y-m-d H:i', strtotime($campanhas->dtenvio . ' ' . $campanhas->hrenvio));
+        
+            $emails = Campanhas_emails::where('campanhas_fk', $campanhas->id)->with('Outbounds')->get();
+
+            if (count($emails) > 0) {
+
+                foreach($emails as $elem) {
+
+                    $assunto = $campanhas->assunto;
+                    $assunto = str_replace('[CONTATO_NOME]', $elem->outbounds->nome, $assunto);
+
+                    $texto = $campanhas->emailhtml;
+                    $texto = str_replace('[CONTATO_NOME]', $elem->outbounds->nome, $texto);
+                    $texto = str_replace('[UNIQUEID]', $elem->uniqueid, $texto);
+
+                    $input = [
+                        "para" => $elem->outbounds->email,
+                        "assunto" => $assunto,
+                        "prioridade" => 10,
+                        "texto" => $texto,
+                        "dtenviar" => $dtenviar
+                    ];
+
+                    try {
+
+                        Emails::create($input);
+                        
+                    } catch (ModelNotFoundException $e) {
+            
+                        echo 'Erro ao inserir email.';
+                        
+                    }
+                }
+
+                $campanhas->enviado = 1;
+                $campanhas->save();
+
+            }
 
         } catch (ModelNotFoundException $e) {
 
