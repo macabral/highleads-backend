@@ -35,6 +35,8 @@ return new class extends Migration
             $table->foreign('categorias_fk')->references('id')->on('categorias');
             
             $table->unique(['campanhas_fk','outbounds_fk']);
+            $table->index('nome');
+            $table->index('empresa');
 
         });
     }

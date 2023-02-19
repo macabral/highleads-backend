@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use App\Models\Emails;
+use Carbon\Carbon;
 
 class EmailsController extends Controller
 {
@@ -142,12 +143,19 @@ class EmailsController extends Controller
             'cc' => 'max:255',
             'bcc' => 'max:255',
             'assunto' => 'required|max:120',
-            'prioridade' => 'max:2'
+            'prioridade' => 'max:2',
+            'texto' => 'required'
         ]);
 
         try {
+            $input = $request->all();
 
-            $emails= Emails::create($request->all());
+            if (! isset($input['dtenviar'])) {
+                $dt = Carbon::now(ENV('APP_GMT'))->format('Y-m-d H:i');
+                $input['dtenviar'] =  $dt;
+            }
+
+            $emails= Emails::create($input);
 
         } catch (\Exception $e) {
 
@@ -157,6 +165,7 @@ class EmailsController extends Controller
         if ($emails->prioridade === 0) {
 
             $this->send();
+            
         }
 
         return response()->json(['created' => true], 201);

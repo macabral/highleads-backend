@@ -119,7 +119,7 @@ class CampanhasController extends Controller
                 $query->where('titulo', 'like',  "%$search%");
             }
 
-            return $query->orderBy('titulo')->paginate(15, ['*'], 'page', $input['page']);
+            return $query->orderBy('enviado')->orderBy('titulo')->paginate(15, ['*'], 'page', $input['page']);
     
             } catch (\Exception $e) {
     
